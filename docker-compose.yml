@@ -1,0 +1,9 @@
+version: "2"
+services:
+  web:
+    build: ./front-end
+    ports:
+      - "80:80"
+    volumes:
+      - ./front-end:/usr/share/nginx/html
+    

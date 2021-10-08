@@ -10,4 +10,6 @@ function handleFile() {
   fileUpload = document.getElementById("inputForm");
   const file = fileUpload.files[0];
   console.log(file);
+
+  
 }

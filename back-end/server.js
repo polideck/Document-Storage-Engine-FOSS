@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var path = require("path");
 
 // Constants
-const PORT = 8080;
+const PORT = 8000;
 const HOST = '0.0.0.0';
 
 // App
@@ -14,11 +14,15 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname,'./public/index.html'));
+  res.sendFile(path.join(__dirname,'./public/loginpage.html'));
 });
 
 app.get('/fileupload', (req, res) => {
   res.sendFile(path.join(__dirname,'./public/fileupload.html'));
+});
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname,'./public/loginpage.html'));
 });
 
 app.post('/add', function(req,res){

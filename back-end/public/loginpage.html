@@ -1,9 +1,7 @@
 <html>
     <head>
         
-        <script type="text/javascript" src="/front-end/recieveInput.js"></script>
-        <script src="http://localhost:8080/auth/js/keycloak.js"></script>
-
+        <script type="text/javascript" src="js/keycloak.js"></script>
         <link rel="stylesheet" type="text/css" href="css/main.css"/>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -12,20 +10,8 @@
         <link rel="preconnect" href="https://fonts.googleapis.com/"> 
         <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin=""> 
 
-        <script>
-            var keycloak = new Keycloak('js/keycloak.json');
-
-            function initKeycloak() {
-                keycloak.init({onLoad: 'login-required'}).then(function() {
-                    //constructTableRows(keycloak.idTokenParsed);
-                    //pasteToken(keycloak.token);
-                }).catch(function() {
-                    alert('failed to initialize');
-                });
-            }
-        </script>
     </head>
-    <body onload="initKeycloak()">
+    <body>
         <div class="left-half">
             <div id="polidecklogowhite">
                 <object data="images/polidecklogowhite.svg" type="image/svg+xml">
@@ -33,11 +19,12 @@
                 </object>
             </div>
 
-            <div id='file-upload'>
-                <h1 id='file-upload-header'>File Upload</h1>
+            <div id='login'>
+                <h1 id='login-header'>Login</h1>
                 <form action="/add" method="POST">
                     <fieldset>
-                      <input type="file" id="myFile" name="filename">
+                      <input type="text" id="username" name="username">
+                      <input type="text" id="password" name="password">
                       <button type ="submit">Submit</button>
                     </fieldset>
                   </form>

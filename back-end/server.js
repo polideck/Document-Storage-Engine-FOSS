@@ -8,7 +8,7 @@ var multer  =   require('multer');
 var multerS3 = require('multer-s3');
 
 // Constants
-const PORT = 8080;
+const PORT = 80;
 const HOST = '0.0.0.0';
 const ID = '';
 const SECRET = '';

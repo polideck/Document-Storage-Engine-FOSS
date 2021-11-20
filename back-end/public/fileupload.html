@@ -21,9 +21,9 @@
 
             <div id='file-upload'>
                 <h1 id='file-upload-header'>File Upload</h1>
-                <form action="/add" method="POST">
+                <form action="/add" method="POST" enctype="multipart/form-data">
                     <fieldset>
-                      <input type="file" id="myFile" name="filename">
+                      <input type="file" id="myFile" name="upl">
                       <button type ="submit">Submit</button>
                     </fieldset>
                   </form>

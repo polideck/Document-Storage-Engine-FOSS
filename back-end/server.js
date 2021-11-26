@@ -14,7 +14,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname,'./public/loginpage.html'));
+  res.sendFile(path.join(__dirname,'./public/fileupload.html'));
 });
 
 app.get('/fileupload', (req, res) => {
@@ -22,7 +22,7 @@ app.get('/fileupload', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname,'./public/loginpage.html'));
+  res.sendFile(path.join(__dirname,'./public/fileupload.html'));
 });
 
 app.post('/add', function(req,res){

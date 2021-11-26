@@ -1,0 +1,22 @@
+{
+  "name": "polideck",
+  "version": "1.0.0",
+  "description": "To run, make sure that Docker is running and then run the following command in the root directory: ``` docker-compose up --build ``` Navigate to http://localhost to see the results",
+  "main": "s3.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Polideck-Capstone-Project/polideck-prod.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Polideck-Capstone-Project/polideck-prod/issues"
+  },
+  "homepage": "https://github.com/Polideck-Capstone-Project/polideck-prod#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1033.0"
+  }
+}

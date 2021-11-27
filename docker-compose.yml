@@ -14,5 +14,3 @@ services:
       environment:
           - KEYCLOAK_USER=admin
           - KEYCLOAK_PASSWORD=admin
-          # - KEYCLOAK_DIST=./keycloak-11.0.0
-          # - KEYCLOAK_WELCOME_THEME= ./keycloak-11.0.0/themes/raincatcher-keycloak-theme-master

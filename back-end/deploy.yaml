@@ -16,4 +16,4 @@ spec:
       - name: nodejscon
         image: cmajorb/nodejs
         ports:
-        - containerPort: 8081
+        - containerPort: 8080

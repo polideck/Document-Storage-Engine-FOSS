@@ -6,12 +6,11 @@ var path = require("path");
 const AWS = require('aws-sdk');
 var multer  =   require('multer');
 var multerS3 = require('multer-s3');
+const Web3 = require('web3');
 
 // Constants
 const PORT = 80;
 const HOST = '0.0.0.0';
-const ID = '';
-const SECRET = '';
 const BUCKET_NAME = 'polideck-bucket-1';
 
 
@@ -26,12 +25,25 @@ const s3 = new AWS.S3({
   region: 'us-west-1'
 })
 
+//const web3 = new Web3('http://localhost:8545');
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname,'./public/fileupload.html'));
+  const accounts = web3.eth.getAccounts();
+  console.log(accounts);
+  res.send(accounts);
 });
 
 app.get('/fileupload', (req, res) => {
+  /*
+  web3.eth.getAccounts().then(accounts => {
+    console.log(`Using account ${accounts[0]}`)
+    var poliContract = web3.eth.contract('');
+    var poli = poliContract.at('0xab5058d5398c4b9eb350b3384c7daca0a27a9f3e');
+    poli.set('req.file.etag');
+    console.log(poli.get());
+    return accounts[0]
+   });
+   */
   res.sendFile(path.join(__dirname,'./public/fileupload.html'));
 });
 
@@ -41,13 +53,13 @@ var upload = multer({
       bucket: BUCKET_NAME,
       key: function (req, file, cb) {
           console.log(file);
-          cb(null, file.originalname); //use Date.now() for unique file keys
+          cb(null, file.originalname);
       }
   })
 });
 
-app.post('/add', upload.array('upl',1), function (req, res, next) {
-  res.send("Uploaded!");
+app.post('/add', upload.single('upl'), function (req, res) {
+  res.send("Uploaded! " + req.file.etag);
 });
 
 app.listen(PORT, HOST);

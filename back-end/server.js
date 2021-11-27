@@ -28,13 +28,9 @@ const s3 = new AWS.S3({
 //const web3 = new Web3('http://localhost:8545');
 
 app.get('/', (req, res) => {
-<<<<<<< HEAD
   const accounts = web3.eth.getAccounts();
   console.log(accounts);
   res.send(accounts);
-=======
-  res.sendFile(path.join(__dirname,'./public/fileupload.html'));
->>>>>>> 4cebe33b2c7cbdd7c35e261b8b33ce41ce3a6eaf
 });
 
 app.get('/fileupload', (req, res) => {

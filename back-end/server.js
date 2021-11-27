@@ -28,7 +28,7 @@ const s3 = new AWS.S3({
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname,'./public/index.html'));
+  res.sendFile(path.join(__dirname,'./public/fileupload.html'));
 });
 
 app.get('/fileupload', (req, res) => {

@@ -6,3 +6,13 @@ services:
       - "80:80"
     volumes:
       - ./back-end:/usr/src/app
+
+  keycloak:
+      image: wizzn/keycloak:14
+      ports:
+          - "8080:8080"
+      environment:
+          - KEYCLOAK_USER=admin
+          - KEYCLOAK_PASSWORD=admin
+          # - KEYCLOAK_DIST=./keycloak-11.0.0
+          # - KEYCLOAK_WELCOME_THEME= ./keycloak-11.0.0/themes/raincatcher-keycloak-theme-master

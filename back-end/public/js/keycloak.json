@@ -1,6 +1,6 @@
 {
   "realm": "master",
-  "auth-server-url": "http://localhost:8080/auth/",
+  "auth-server-url": "http://localhost:5000/auth/",
   "ssl-required": "external",
   "resource": "UserClient",
   "public-client": true,

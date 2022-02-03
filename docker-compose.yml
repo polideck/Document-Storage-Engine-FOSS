@@ -1,16 +1,21 @@
 version: "2"
+
 services:
+  
   web:
     build: ./back-end
     ports:
       - "80:80"
     volumes:
       - ./back-end:/usr/src/app
+    
 
   keycloak:
-      image: wizzn/keycloak:14
+      image: jboss/keycloak:latest
       ports:
-          - "8080:8080"
+          - "5000:5000"
       environment:
           - KEYCLOAK_USER=admin
           - KEYCLOAK_PASSWORD=admin
+          - DB_VENDOR=h2
+

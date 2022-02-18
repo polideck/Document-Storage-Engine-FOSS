@@ -9,13 +9,15 @@ services:
     volumes:
       - ./back-end:/usr/src/app
     
+  cache:
+    image: redis:latest
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 5 1
+    volumes: 
+      - cache:/data
 
-  keycloak:
-      image: jboss/keycloak:latest
-      ports:
-          - "5000:5000"
-      environment:
-          - KEYCLOAK_USER=admin
-          - KEYCLOAK_PASSWORD=admin
-          - DB_VENDOR=h2
-
+volumes:
+  cache:
+    driver: local

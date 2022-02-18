@@ -20,8 +20,8 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: false}));
 
 const s3 = new AWS.S3({
-  accessKeyId: 'AKIAWJGRR673AQTJYVWD',
-  secretAccessKey: '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',
+  accessKeyId: '',
+  secretAccessKey: '',
   region: 'us-west-1'
 })
 

@@ -32,6 +32,7 @@ function decrypt(val){
 const express = require('express');
 const path = require('path');
 const app = express()
+app.use(express.static("public"));
 const port = 3000
 
 const redis = require('redis');
@@ -54,16 +55,8 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname,'login.html'));
+    res.sendFile(path.join(__dirname,'public/login.html'));
 })
-
-app.get('/polidecklogowhite.svg', (req, res) => {
-    res.sendFile(path.join(__dirname,'polidecklogowhite.svg'));
-});
-
-app.get('/login.js', (req, res) => {
-    res.sendFile(path.join(__dirname,'login.js'));
-});
 
 app.get('/api/getNonce', async (req, res) => {
     var nonce = await getNonce(req.query.publicAddress);

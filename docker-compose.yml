@@ -1,14 +1,5 @@
-version: "2"
-
+version: '3.8'
 services:
-  
-  web:
-    build: ./back-end
-    ports:
-      - "80:80"
-    volumes:
-      - ./back-end:/usr/src/app
-    
   cache:
     image: redis:latest
     restart: always
@@ -17,7 +8,6 @@ services:
     command: redis-server --save 5 1
     volumes: 
       - cache:/data
-
 volumes:
   cache:
     driver: local

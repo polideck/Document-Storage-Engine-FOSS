@@ -1,0 +1,90 @@
+<html>
+  <head>
+      <meta charset="utf-8">
+
+      <title>Search Files</title>
+
+      <style>
+          .container {
+              background-color: rgb(58,58,60);
+              overflow-y: auto;
+              overflow-x: auto;
+              margin-bottom: 20px;
+          }
+
+          .polidecklogowhite {
+              width: 20vw;
+              min-width: 400px;
+              display: block;
+              margin-top: 20px;
+              margin-left: auto;
+              margin-right: auto;
+              animation-name: fadeInUp;
+          }
+
+          body {
+              background: rgb(58,58,60) !important;
+          }
+
+          html {
+              background-color: rgb(58,58,60);
+          }
+      </style>
+
+      <!-- Include Bootstrap for styling -->
+      <!-- CSS only -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <!-- Include the Bootstrap Table CSS for the table -->
+      <link rel="stylesheet" href= "https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css">
+
+      <!-- Background Stylesheet -->
+      <!-- <link rel="stylesheet" href = "css/background.css"> -->
+
+      <!-- Include jQuery and other required files for Bootstrap -->
+      <script src= "https://code.jquery.com/jquery-3.3.1.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+      <!-- Include the JavaScript filefor Bootstrap table -->
+      <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+      
+      <!-- File Search JavaScript -->
+      <script src="./js/fileSearch.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <img src='images/polidecklogowhite.svg' class="polidecklogowhite" alt="logo" />
+      <h1 class="text text-light text-center">
+        Search Files
+      </h1>
+      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+      <br>
+      <table class="table-striped table-dark" id= "blockchain-table"> 
+        <thead>
+          <tr>
+            <th data-field="Name">
+              <span class="text-info">
+                File Name
+              </span>
+            </th>
+            <th data-field="DateAdded">
+              <span class="text-info">
+                Date Added
+              </span>
+            </th>
+            <th data-field="CreatedBy">
+              <span class="text-info">
+                Created By
+              </span>
+            </th>
+            <th>
+              <span class="text-info">
+                Delete
+              </span>
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    
+  </body>
+</html>

@@ -58,13 +58,17 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname,'public/login.html'));
 })
 
+app.get('/search', (req, res) => {
+    res.sendFile(path.join(__dirname,'public/searchFiles.html'));
+})
+
 app.get('/api/getNonce', async (req, res) => {
     var nonce = await getNonce(req.query.publicAddress);
     res.send({ nonce: nonce });
 });
 
 app.get('/api/getJWT', async (req, res) => {
-    try{
+    try{ 
         const address = req.query.address;
         const parsedData = JSON.parse(req.query.data)
         const parsedSig = JSON.parse(req.query.sig)

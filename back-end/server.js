@@ -62,10 +62,7 @@ app.get('/', (req, res) => {
   const accounts = web3.eth.getAccounts();
   console.log(accounts);
   res.send(accounts);
-});
-
-app.get('/fileupload', (req, res) => {
-  res.sendFile(path.join(__dirname,'./public/fileupload.html'));
+  res.redirect('/login')
 });
 
 var upload = multer({

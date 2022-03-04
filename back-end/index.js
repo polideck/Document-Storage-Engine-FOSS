@@ -50,17 +50,23 @@ client.on('error', (err) => {console.log('Redis Client Error', err); exit(1);});
 const ethUtil = require("@metamask/eth-sig-util");
 const { exit } = require('process');
 
+
 app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+    res.redirect('/login')
+});
 
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname,'public/login.html'));
-})
+});
 
 app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname,'public/searchFiles.html'));
-})
+});
+
+app.get('/fileupload', (req, res) => {
+    res.sendFile(path.join(__dirname,'./public/fileupload.html'));
+  });
+
 
 app.get('/api/getNonce', async (req, res) => {
     var nonce = await getNonce(req.query.publicAddress);

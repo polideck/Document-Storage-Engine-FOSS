@@ -26,6 +26,34 @@
               background: rgb(58,58,60) !important;
           }
 
+          #gold-button {
+            width: 300px;
+            height: 50px;
+
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+
+            color: white;
+            font-size: 20px;
+            letter-spacing: 4px;
+            font-family: 'Times';
+            font-weight: 900;
+
+            background-color: rgb(58,58,60);
+
+            border: 2px solid rgb(204,167,49);
+            border-radius: 5px;
+
+            transition: all .7s ease 0s;
+            }
+            #gold-button:hover {
+                background-color: rgb(204,167,49);
+                cursor: pointer;
+            }
+
           html {
               background-color: rgb(58,58,60);
           }
@@ -51,8 +79,9 @@
     <div class="container">
       <img src='images/polidecklogowhite.svg' class="polidecklogowhite" alt="logo" />
       <h1 class="text text-light text-center">
-        Search Files
+        Manage Files
       </h1>
+      <button id="gold-button">Upload Files</button>
       <input class="form-control" id="myInput" type="text" placeholder="Search..">
       <br>
       <table class="table-striped table-dark" id= "blockchain-table"> 

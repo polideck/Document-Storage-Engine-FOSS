@@ -1,17 +1,23 @@
 //Initialize & Verify Configuration
 require('dotenv').config({ path: './server.env' });
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 const fs = require('fs') 
 const envfile = require('envfile')
 const sourcePath = 'server.env'
 
-if(process.env.AESKEY == "" && process.env.IV == ""){
+if(process.env.AESKEY == "" && process.env.IV == "" && process.env.TOKEN_SECRET == ""){
     let parsedFile = envfile.parse(sourcePath);
     var sharedSecret = crypto.createHash('sha256').update(String(crypto.randomBytes(32))).digest('base64').substring(0, 32);
     parsedFile.AESKEY = sharedSecret;
+
     var initializationVector = crypto.randomBytes(16);
     initializationVector = initializationVector.toString('hex').slice(0, 16);
     parsedFile.IV = initializationVector;
+
+    var initializationTokenSecret = crypto.createHash('sha256').update(String(crypto.randomBytes(32))).digest('base64').substring(0, 32);
+    parsedFile.TOKEN_SECRET = initializationTokenSecret;
+
     fs.writeFileSync('./server.env', envfile.stringify(parsedFile)) 
 }
 
@@ -79,16 +85,31 @@ app.get('/api/getJWT', async (req, res) => {
         const parsedData = JSON.parse(req.query.data)
         const parsedSig = JSON.parse(req.query.sig)
 
+        //Todo: Check that user is someone we authorized to be in the system
+
         const recovered = ethUtil.recoverTypedSignature({
             data: parsedData,
             signature: parsedSig,
             version: "V4"
         });
 
-        if (ethUtil.extractPublicKey(recovered) == address) {
+        if (recovered == address) {
             console.log('Successfully recovered signer as ' + address);
+
+
+            //Generate JWT
+            console.log(process.env.TOKEN_SECRET);
+
+            const expiration = Date.now() + 1800;
+
+            const token = jwt.sign({publicAddress: address, exp: expiration}, process.env.TOKEN_SECRET);
+            console.log(token)
+            //Send Back JWT token
+            res.send(token);
         } else {
             console.log('Failed to verify signer when comparing ' + parsedSig + ' to ' + address);
+
+            res.sendStatus(501);
         }
     } catch (e) {
         console.error(e);

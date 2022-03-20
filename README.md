@@ -1,7 +1,12 @@
 # polideck-prod
-To run, make sure that Docker is running and then run the following command in the root directory:
+To run, make sure that Docker is running and then run the following commands:
 ```
+In the root directory run:
 docker-compose up --build
+
+In back-end run:
+npm start
+
 ```
 Navigate to http://localhost to see the results 
 

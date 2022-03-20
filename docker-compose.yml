@@ -1,21 +1,13 @@
-version: "2"
-
+version: '3.8'
 services:
-  
-  web:
-    build: ./back-end
+  cache:
+    image: redis:latest
+    restart: always
     ports:
-      - "80:80"
-    volumes:
-      - ./back-end:/usr/src/app
-    
-
-  keycloak:
-      image: jboss/keycloak:latest
-      ports:
-          - "5000:5000"
-      environment:
-          - KEYCLOAK_USER=admin
-          - KEYCLOAK_PASSWORD=admin
-          - DB_VENDOR=h2
-
+      - '6379:6379'
+    command: redis-server --save 5 1
+    volumes: 
+      - cache:/data
+volumes:
+  cache:
+    driver: local

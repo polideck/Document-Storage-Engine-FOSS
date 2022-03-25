@@ -10,6 +10,7 @@
     "express": "^4.17.2",
     "lowdb": "^3.0.0",
     "redis": "^4.0.3",
+    "jsonwebtoken": "^8.5.1",
     "aws-sdk": "^2.1033.0",
     "fs": "^0.0.1-security",
     "ipfs-http-client": "^56.0.1",

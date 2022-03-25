@@ -83,7 +83,7 @@ async function signNonce(publicAddress, nonce){
           fetch(url)
           .then(response=>response.json())
           .then(data=>{
-            console.log("JWT: " + data.JWT);
+            console.log("JWT: " + response);
           }).catch(function (err) {
               return;
           });

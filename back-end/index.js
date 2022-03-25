@@ -4,6 +4,64 @@ const crypto = require('crypto');
 const fs = require('fs') 
 const envfile = require('envfile')
 const sourcePath = 'server.env'
+const { create, globSource } = require('ipfs-http-client')
+var multer  =   require('multer');
+const Web3 = require('web3');
+
+const abi = [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "data",
+				"type": "string"
+			}
+		],
+		"name": "set",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "get",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+
+const web3 = new Web3('http://localhost:8545');
+
+const upload = multer({ dest: 'public/uploads' });
+
+// connect to the default API address http://localhost:5001
+const ipfs_client = create()
+
+// call Core API methods
+//const { cid } = await ipfs_client.add('Hello world!')
+
+function saveToIpfs (file, callback) {
+    let ipfsId
+    ipfs_client.add(file, { progress: (prog) => console.log(`received: ${prog}`) })
+      .then((response) => {
+        console.log(response)
+        ipfsId = response[0].hash
+        console.log(ipfsId)
+        this.setState({ added_file_hash: ipfsId })
+      }).catch((err) => {
+        console.error(err)
+      })
+      callback(ipfsId)
+  }
 
 if(process.env.AESKEY == "" && process.env.IV == ""){
     let parsedFile = envfile.parse(sourcePath);
@@ -67,6 +125,19 @@ app.get('/fileupload', (req, res) => {
     res.sendFile(path.join(__dirname,'./public/fileupload.html'));
   });
 
+app.post('/add', upload.single('upl'), function (req, res) {
+    saveToIpfs(req.file, res.send)
+        
+    /*
+    web3.eth.getAccounts().then(accounts => {
+        var poliContract = new web3.eth.Contract(abi, '0xf4B8b9DC24d8174585f7f58e813a002DC8cA5bf1',{from:accounts[0]})
+        poliContract.methods.set(req.file.etag).send().then(function(receipt){
+            console.log(receipt);
+        });
+    });  
+    */
+    
+});
 
 app.get('/api/getNonce', async (req, res) => {
     var nonce = await getNonce(req.query.publicAddress);

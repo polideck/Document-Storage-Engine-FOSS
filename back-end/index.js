@@ -114,28 +114,33 @@ client.on('error', (err) => {console.log('Redis Client Error', err); exit(1);});
 const ethUtil = require("@metamask/eth-sig-util");
 const { exit } = require('process');
 
-const headers = new Headers({
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + localStorage.getItem('token')
-});
-
-function authenticateToken(req, res, next) {
+function authenticateToken(req, res) {
     const authHeader = req.headers['authorization']
-    console.log(authHeader);
     const token = authHeader && authHeader.split(' ')[1]
-  
-    if (token == null) return res.sendStatus(401)
+
+    console.log('AuthenticateToken')
+    console.log(token)
+
+    if (token == null || token == '') {
+        console.log('token null')
+        res.redirect('/login')
+        return false;
+    }
+
   
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-      console.log(err)
-  
-      if (err) return res.sendStatus(403)
-  
-      req.user = user
-  
-      next()
+      if (err){
+        console.log(err)
+        res.redirect('/login')
+        return false;
+      }
+        return true;
     })
+
+    
+    return false;
   }
+  
 
 app.get('/', (req, res) => {
     res.redirect('/login')
@@ -145,8 +150,17 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname,'public/login.html'));
 });
 
-app.get('/search', authenticateToken, headers, (req, res) => {
+app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname,'public/searchFiles.html'));
+});
+
+app.get('/api/authenticate-token', (req, res) => {
+    if(authenticateToken(req, res)){
+        res.sendStatus(200);
+    }
+    else{
+        res.redirect('/login');
+    }
 });
 
 app.get('/fileupload', (req, res) => {
@@ -191,16 +205,16 @@ app.get('/api/getJWT', async (req, res) => {
 
 
             //Generate JWT
-            console.log(process.env.TOKEN_SECRET);
-
             const expiration = Date.now() + 1800;
 
             const token = jwt.sign({publicAddress: address, exp: expiration}, process.env.TOKEN_SECRET);
 
             console.log('token')
             console.log(token)
+
             //Send Back JWT token
-            res.json(token);
+            res.json(token)
+
         } else {
             console.log('Failed to verify signer when comparing ' + parsedSig + ' to ' + address);
 

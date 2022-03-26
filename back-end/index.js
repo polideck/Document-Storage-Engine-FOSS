@@ -174,9 +174,11 @@ app.get('/api/getJWT', async (req, res) => {
             const expiration = Date.now() + 1800;
 
             const token = jwt.sign({publicAddress: address, exp: expiration}, process.env.TOKEN_SECRET);
+
+            console.log('token')
             console.log(token)
             //Send Back JWT token
-            res.send(token);
+            res.json(token);
         } else {
             console.log('Failed to verify signer when comparing ' + parsedSig + ' to ' + address);
 

@@ -1,10 +1,5 @@
 const loginButton = document.getElementById("loginWithWallet");
 
-//Authorization token
-let authorization = '';
-
-
-
 loginButton.addEventListener('click', function (event) {
     if (typeof window.ethereum !== 'undefined') {
         loginWithWallet();
@@ -89,14 +84,16 @@ async function signNonce(publicAddress, nonce){
 
           fetch(url)
           .then(
-            r => r.json()
+            result => result.json()
           )
           .then(
-            r => authorization = r
+            result => localStorage.setItem('token', result)
+            //result => document.cookie = `token=${result}`
+
           )
           .catch(function (err) {
               console.log(err)
           });
         }   
-      );
+      )
 }

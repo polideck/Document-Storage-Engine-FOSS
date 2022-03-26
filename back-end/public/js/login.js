@@ -85,10 +85,14 @@ async function signNonce(publicAddress, nonce){
           fetch(url)
           .then(
             result => result.json()
+            
           )
           .then(
-            result => localStorage.setItem('token', result)
-            //result => document.cookie = `token=${result}`
+            result => {
+              // localStorage.setItem('refresh', )
+              localStorage.setItem('bearer', result)
+              window.location.replace('/search')
+            }
 
           )
           .catch(function (err) {
@@ -97,3 +101,4 @@ async function signNonce(publicAddress, nonce){
         }   
       )
 }
+

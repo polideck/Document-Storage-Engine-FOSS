@@ -1,3 +1,32 @@
+
+var url = "http://localhost:3000/api/authenticate-token";
+
+var bearer = 'Bearer ' + localStorage.getItem('bearer')
+console.log('bearer3')
+console.log(bearer);
+fetch(url, {
+        method: 'GET',
+        redirect: 'follow',
+        withCredentials: true,
+        credentials: 'include',
+        headers: {
+            'Authorization': bearer,
+            'Content-Type': 'application/json'
+        }
+    })
+    .catch(err =>{
+    console.log('error')
+    console.log(err)
+    })
+    .then(res =>
+        {
+            if(res.status != 200)
+                window.location.replace('/login')
+        }
+    );
+
+
+
 $(document).ready(function() {
   $('table').bootstrapTable({
       data: mydata
@@ -10,6 +39,7 @@ $(document).ready(function() {
       });
   });
 });
+
 
 // JSON data
 var mydata = [{

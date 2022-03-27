@@ -5,6 +5,13 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs') 
 const envfile = require('envfile')
 const sourcePath = 'server.env'
+const fileUpload = require('express-fileupload');
+const express = require('express');
+const path = require('path');
+const bodyparser = require('body-parser');
+const { concat: uint8ArrayConcat } = require('uint8arrays/concat')
+const all = require('it-all')
+
 const { create, globSource } = require('ipfs-http-client')
 var multer  =   require('multer');
 const Web3 = require('web3');
@@ -50,20 +57,6 @@ const ipfs_client = create()
 // call Core API methods
 //const { cid } = await ipfs_client.add('Hello world!')
 
-function saveToIpfs (file, callback) {
-    let ipfsId
-    ipfs_client.add(file, { progress: (prog) => console.log(`received: ${prog}`) })
-      .then((response) => {
-        console.log(response)
-        ipfsId = response[0].hash
-        console.log(ipfsId)
-        this.setState({ added_file_hash: ipfsId })
-      }).catch((err) => {
-        console.error(err)
-      })
-      callback(ipfsId)
-  }
-
 if(process.env.AESKEY == "" && process.env.IV == "" && process.env.TOKEN_SECRET == ""){
     let parsedFile = envfile.parse(sourcePath);
     var sharedSecret = crypto.createHash('sha256').update(String(crypto.randomBytes(32))).digest('base64').substring(0, 32);
@@ -93,11 +86,16 @@ function decrypt(val){
 
 //Start of Server
 
-const express = require('express');
-const path = require('path');
+
 const app = express()
+app.use(bodyparser.urlencoded({extended: true}));
+
 app.use(express.static("public"));
 const port = 3000
+app.use(fileUpload());
+app.use(express.json());
+
+
 
 const redis = require('redis');
 const client = redis.createClient();
@@ -131,18 +129,40 @@ app.get('/fileupload', (req, res) => {
     res.sendFile(path.join(__dirname,'./public/fileupload.html'));
   });
 
-app.post('/add', upload.single('upl'), function (req, res) {
-    saveToIpfs(req.file, res.send)
-        
-    /*
-    web3.eth.getAccounts().then(accounts => {
-        var poliContract = new web3.eth.Contract(abi, '0xf4B8b9DC24d8174585f7f58e813a002DC8cA5bf1',{from:accounts[0]})
-        poliContract.methods.set(req.file.etag).send().then(function(receipt){
-            console.log(receipt);
-        });
-    });  
-    */
-    
+app.post('/add',(req,res)=>{
+    const file = req.files.file;
+    console.log(req.files)
+    const fileName = "test.jpg";
+    const filePath = 'public/uploads/'+fileName;
+
+    file.mv(filePath,async(err)=>{
+        if(err){
+            console.log("error : while uploading file");
+            return res.status(500).send(err);
+        }
+        const fileHash = await addIpfsFile (fileName,filePath);
+        fs.unlink(filePath,(err)=>{
+            if(err) console.log(err);
+        })
+        res.send(fileHash.toString());
+
+    })
+});
+
+const addIpfsFile = async (fileName,filePath)=>{
+    const file = fs.readFileSync(filePath);
+    const fileAdded = await ipfs_client.add({path: fileName,content:file});
+    const {cid} = fileAdded;
+    return cid;
+}
+
+app.get('/file', async (req, res) => {
+    //Replace this with actual file name
+    var file_path = 'public/downloads/test.jpeg'
+    const data = uint8ArrayConcat(await all(ipfs_client.cat(req.query.cid)))
+    fs.writeFile(file_path, data, function(err, result) {
+        res.download(file_path);
+      });    
 });
 
 app.get('/api/getNonce', async (req, res) => {

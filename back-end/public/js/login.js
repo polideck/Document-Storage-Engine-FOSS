@@ -1,4 +1,5 @@
 const loginButton = document.getElementById("loginWithWallet");
+
 loginButton.addEventListener('click', function (event) {
     if (typeof window.ethereum !== 'undefined') {
         loginWithWallet();
@@ -80,13 +81,19 @@ async function signNonce(publicAddress, nonce){
           let params = {address: publicAddress, data: options, sig: signature}
           url.search = new URLSearchParams(params);
 
+
           fetch(url)
-          .then(response=>response.json())
-          .then(data=>{
-            console.log("JWT: " + response);
-          }).catch(function (err) {
-              return;
+          .then(
+            result => result.json()
+          )
+          .then(
+            result => localStorage.setItem('token', result)
+            //result => document.cookie = `token=${result}`
+
+          )
+          .catch(function (err) {
+              console.log(err)
           });
-        }
-      );
+        }   
+      )
 }

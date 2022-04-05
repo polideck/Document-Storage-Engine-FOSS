@@ -5,6 +5,13 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs') 
 const envfile = require('envfile')
 const sourcePath = 'server.env'
+//const fileUpload = require('express-fileupload');
+const express = require('express');
+const path = require('path');
+const bodyparser = require('body-parser');
+const { concat: uint8ArrayConcat } = require('uint8arrays/concat')
+const all = require('it-all')
+
 const { create, globSource } = require('ipfs-http-client')
 var multer  =   require('multer');
 const Web3 = require('web3');
@@ -50,20 +57,6 @@ const ipfs_client = create()
 // call Core API methods
 //const { cid } = await ipfs_client.add('Hello world!')
 
-function saveToIpfs (file, callback) {
-    let ipfsId
-    ipfs_client.add(file, { progress: (prog) => console.log(`received: ${prog}`) })
-      .then((response) => {
-        console.log(response)
-        ipfsId = response[0].hash
-        console.log(ipfsId)
-        this.setState({ added_file_hash: ipfsId })
-      }).catch((err) => {
-        console.error(err)
-      })
-      callback(ipfsId)
-  }
-
 if(process.env.AESKEY == "" && process.env.IV == "" && process.env.TOKEN_SECRET == ""){
     let parsedFile = envfile.parse(sourcePath);
     var sharedSecret = crypto.createHash('sha256').update(String(crypto.randomBytes(32))).digest('base64').substring(0, 32);
@@ -93,11 +86,16 @@ function decrypt(val){
 
 //Start of Server
 
-const express = require('express');
-const path = require('path');
+
 const app = express()
+app.use(bodyparser.urlencoded({extended: true}));
+
 app.use(express.static("public"));
 const port = 3000
+//app.use(fileUpload());
+app.use(express.json());
+
+
 
 const redis = require('redis');
 const client = redis.createClient();
@@ -114,33 +112,34 @@ client.on('error', (err) => {console.log('Redis Client Error', err); exit(1);});
 const ethUtil = require("@metamask/eth-sig-util");
 const { exit } = require('process');
 
-function authenticateToken(req, res) {
+// const headers = new Headers({
+//     'Content-Type': 'application/json',
+//     'Authorization': 'Bearer ' + localStorage.getItem('token')
+// });
+
+function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
+    console.log('TESTTEST123')
+    console.log(authHeader);
 
-    console.log('AuthenticateToken')
-    console.log(token)
-
-    if (token == null || token == '') {
-        console.log('token null')
-        res.redirect('/login')
-        return false;
+    if(authHeader == null){
+        return res.sendStatus(401);
     }
 
+    const token = authHeader && authHeader.split(' ')[1]
+  
+    if (token == null) return res.sendStatus(401)
   
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-      if (err){
-        console.log(err)
-        res.redirect('/login')
-        return false;
-      }
-        return true;
-    })
-
-    
-    return false;
-  }
+      console.log(err)
   
+      if (err) return res.sendStatus(403)
+  
+      req.user = user
+  
+      next()
+    })
+  }
 
 app.get('/', (req, res) => {
     res.redirect('/login')
@@ -152,15 +151,6 @@ app.get('/login', (req, res) => {
 
 app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname,'public/searchFiles.html'));
-});
-
-app.get('/api/authenticate-token', (req, res) => {
-    if(authenticateToken(req, res)){
-        res.sendStatus(200);
-    }
-    else{
-        res.redirect('/login');
-    }
 });
 
 app.get('/fileupload', (req, res) => {
@@ -180,6 +170,10 @@ app.post('/add', upload.single('upl'), function (req, res) {
     */
     
 });
+
+app.get('/api/authenticate-token', authenticateToken, (req, res) => {
+
+})
 
 app.get('/api/getNonce', async (req, res) => {
     var nonce = await getNonce(req.query.publicAddress);
@@ -205,16 +199,16 @@ app.get('/api/getJWT', async (req, res) => {
 
 
             //Generate JWT
+            console.log(process.env.TOKEN_SECRET);
+
             const expiration = Date.now() + 1800;
 
             const token = jwt.sign({publicAddress: address, exp: expiration}, process.env.TOKEN_SECRET);
 
             console.log('token')
             console.log(token)
-
             //Send Back JWT token
-            res.json(token)
-
+            res.json(token);
         } else {
             console.log('Failed to verify signer when comparing ' + parsedSig + ' to ' + address);
 

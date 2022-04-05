@@ -4,6 +4,7 @@ var url = "http://localhost:3000/api/authenticate-token";
 var bearer = 'Bearer ' + localStorage.getItem('bearer')
 console.log('bearer3')
 console.log(bearer);
+
 fetch(url, {
         method: 'GET',
         redirect: 'follow',
@@ -20,6 +21,8 @@ fetch(url, {
     })
     .then(res =>
         {
+            console.log(res.statusText)
+
             if(res.status != 200)
                 window.location.replace('/login')
         }

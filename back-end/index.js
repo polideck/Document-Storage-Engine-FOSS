@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const fs = require('fs') 
 const envfile = require('envfile')
 const sourcePath = 'server.env'
-//const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const express = require('express');
 const path = require('path');
 const bodyparser = require('body-parser');
@@ -92,7 +92,7 @@ app.use(bodyparser.urlencoded({extended: true}));
 
 app.use(express.static("public"));
 const port = 3000
-//app.use(fileUpload());
+app.use(fileUpload());
 app.use(express.json());
 
 

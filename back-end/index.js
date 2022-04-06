@@ -151,7 +151,6 @@ app.get('/fileupload', (req, res) => {
     res.sendFile(path.join(__dirname,'./public/fileupload.html'));
   });
 
-<<<<<<< HEAD
 app.post('/add',(req,res)=>{
     const file = req.files.file;
     console.log(req.files)
@@ -186,20 +185,6 @@ app.get('/file', async (req, res) => {
     fs.writeFile(file_path, data, function(err, result) {
         res.download(file_path);
       });    
-=======
-app.post('/add', upload.single('upl'), function (req, res) {
-    saveToIpfs(req.file, res.send)
-        
-    /*  
-    web3.eth.getAccounts().then(accounts => {
-        var poliContract = new web3.eth.Contract(abi, '0xf4B8b9DC24d8174585f7f58e813a002DC8cA5bf1',{from:accounts[0]})
-        poliContract.methods.set(req.file.etag).send().then(function(receipt){
-            console.log(receipt);
-        });
-    });  
-    */
-    
->>>>>>> 1b601c73200350e46b0da6896b190a8125e2d608
 });
 
 app.get('/api/getNonce', async (req, res) => {

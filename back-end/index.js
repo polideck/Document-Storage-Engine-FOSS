@@ -11,7 +11,6 @@ const path = require('path');
 const bodyparser = require('body-parser');
 const { concat: uint8ArrayConcat } = require('uint8arrays/concat')
 const all = require('it-all')
-
 const { create, globSource } = require('ipfs-http-client')
 var multer  =   require('multer');
 const Web3 = require('web3');
@@ -112,10 +111,6 @@ client.on('error', (err) => {console.log('Redis Client Error', err); exit(1);});
 const ethUtil = require("@metamask/eth-sig-util");
 const { exit } = require('process');
 
-const headers = new Headers({
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + localStorage.getItem('token')
-});
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
@@ -143,7 +138,7 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname,'public/login.html'));
 });
 
-app.get('/search', authenticateToken, headers, (req, res) => {
+app.get('/search', authenticateToken, (req, res) => {
     res.sendFile(path.join(__dirname,'public/searchFiles.html'));
 });
 

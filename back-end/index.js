@@ -114,7 +114,13 @@ const { exit } = require('process');
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
+    console.log('TESTTEST123')
     console.log(authHeader);
+
+    if(authHeader == null){
+        return res.sendStatus(401);
+    }
+
     const token = authHeader && authHeader.split(' ')[1]
   
     if (token == null) return res.sendStatus(401)
@@ -138,7 +144,7 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname,'public/login.html'));
 });
 
-app.get('/search', authenticateToken, (req, res) => {
+app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname,'public/searchFiles.html'));
 });
 
@@ -181,6 +187,10 @@ app.get('/file', async (req, res) => {
         res.download(file_path);
       });    
 });
+
+app.get('/api/authenticate-token', authenticateToken, (req, res) => {
+
+})
 
 app.get('/api/getNonce', async (req, res) => {
     var nonce = await getNonce(req.query.publicAddress);

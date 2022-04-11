@@ -188,6 +188,11 @@ app.get('/file', async (req, res) => {
       });    
 });
 
+app.get('/delete', async (req, res) => {
+    var current_cid = req.query.cid;
+    //Mark the file as deleted
+});
+
 app.get('/api/authenticate-token', authenticateToken, (req, res) => {
 
 })

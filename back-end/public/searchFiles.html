@@ -5,6 +5,10 @@
       <title>Search Files</title>
 
       <style>
+          html {
+              background-color: rgb(58,58,60);
+          }
+
           .container {
               background-color: rgb(58,58,60);
               overflow-y: auto;
@@ -26,7 +30,7 @@
               background: rgb(58,58,60) !important;
           }
 
-          #gold-button {
+          .gold-button{
             width: 300px;
             height: 50px;
 
@@ -48,15 +52,12 @@
             border-radius: 5px;
 
             transition: all .7s ease 0s;
-            }
-            #gold-button:hover {
-                background-color: rgb(204,167,49);
-                cursor: pointer;
+            } 
+          .gold-button:hover {
+              background-color: rgb(204,167,49);
+              cursor: pointer;
             }
 
-          html {
-              background-color: rgb(58,58,60);
-          }
       </style>
 
       <!-- Include Bootstrap for styling -->
@@ -72,8 +73,10 @@
       <!-- Include the JavaScript filefor Bootstrap table -->
       <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
       
-      <!-- File Search JavaScript -->
+      <!-- File Search and upload JavaScript -->
       <script src="./js/fileSearch.js"></script>
+      <script src="./js/fileUpload.js"></script>
+      
   </head>
   <body>
     <div class="container">
@@ -81,7 +84,11 @@
       <h1 class="text text-light text-center">
         Manage Files
       </h1>
-      <button id="gold-button">Upload Files</button>
+
+      <input id="fileupload" type="file" class="gold-button" name="fileupload" />
+
+      <button id="upload-button" class="gold-button" onclick="uploadFile()"> Upload </button>
+
       <input class="form-control" id="myInput" type="text" placeholder="Search..">
       <br>
       <table class="table-striped table-dark" id= "blockchain-table"> 

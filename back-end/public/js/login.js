@@ -36,7 +36,7 @@ async function loginWithWallet() {
 }
 
 async function signNonce(publicAddress, nonce){
-    var msg = "Welecome to Polideck! Please sign this message to verify your account. \n\nNonce: " + nonce;
+    var msg = "Welcome to Polideck! Please sign this message to verify your account. \n\nNonce: " + nonce;
 
     const options = JSON.stringify({
         domain: {

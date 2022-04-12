@@ -16,7 +16,12 @@
 // }
 
 async function uploadFile() {
-    let formData = new FormData();           
+  if(!fileupload.files[0]){
+    return;
+  }
+
+    let formData = new FormData();   
+
     formData.append("file", fileupload.files[0]);
     await fetch('/add', {
       method: "POST", 

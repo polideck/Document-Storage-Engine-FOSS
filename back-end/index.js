@@ -138,7 +138,7 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname,'public/login.html'));
 });
 
-app.get('/search', authenticateToken, (req, res) => {
+app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname,'public/searchFiles.html'));
 });
 
@@ -148,7 +148,6 @@ app.get('/fileupload', (req, res) => {
 
 app.post('/add',(req,res)=>{
     const file = req.files.file;
-    console.log(req.files)
     const fileName = "test.jpg";
     const filePath = 'public/uploads/'+fileName;
 

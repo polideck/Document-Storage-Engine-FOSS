@@ -148,9 +148,9 @@ app.get('/fileupload', (req, res) => {
 
 app.post('/add',(req,res)=>{
     const file = req.files.file;
-    const fileName = "test.jpg";
+    const fileName = file.name;
     const filePath = 'public/uploads/'+fileName;
-
+    
     file.mv(filePath,async(err)=>{
         if(err){
             console.log("error : while uploading file");

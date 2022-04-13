@@ -25,7 +25,7 @@ contract MasterContract {
 
     //Function needed to take IPFS hash and make new Document Contract (or add new revision) (FOR UPLOAD)
 
-    //Function needed to get all document contracts from specified owner (FOR SEARCH/VIEWING)
+    //Function needed to get all or specifically searched document contracts from specified owner (FOR SEARCH/VIEWING)
 
     //Function needed to download most recent document revision (actually getting hash) (FOR DOWNLOAD)
 

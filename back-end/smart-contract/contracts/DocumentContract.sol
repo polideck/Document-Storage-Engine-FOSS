@@ -1,5 +1,12 @@
 pragma solidity >=0.4.22 <0.9.0;
 
+/* How Master Contract Moves:
+    Owner Address (Used to index for each user)
+        List of Document Contracts (Appends new Document Contract for every upload based on IPFS hash) (Used to search/view all documents on main search page)
+            Document Contract (Has its own contract address and name for each document on blockchain)
+                Document Revisions/Versions w/ Hashes (Used to download from IPFS based on hash stored)
+                
+ */
 contract MasterContract {
     //Needs to take in public owner address 
 
@@ -12,6 +19,9 @@ contract MasterContract {
         {DOC_CONTRACT_ADDRESS: NAME_OF_DOCUMENT},
         {DOC_CONTRACT_ADDRESS: NAME_OF_DOCUMENT}
     } */
+
+
+
 
     //Function needed to take IPFS hash and make new Document Contract (or add new revision) (FOR UPLOAD)
 
@@ -26,6 +36,6 @@ contract MasterContract {
 
 contract DocumentContract {
     //List Document Revisions and their respective hashes
-
+    //Want an array of document versions
 
 }

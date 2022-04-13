@@ -192,6 +192,7 @@ app.get('/delete', async (req, res) => {
     //Mark the file as deleted
 });
 
+//Remove authenticateToken when testing to bypass login
 app.get('/api/authenticate-token', authenticateToken, (req, res) => {
 
 })

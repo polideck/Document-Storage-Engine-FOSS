@@ -27,9 +27,7 @@ contract DocumentContract {
     }
 
     function updateDocument(string memory newIpfsHash, string  memory newName) public{
-        revisions.push(RevisionDocument(
-            {ipfsHash: ipfsHash, name: documentName}
-            ));
+        revisions.push(RevisionDocument({ipfsHash: ipfsHash, name: documentName}));
 
         ipfsHash = newIpfsHash;
         documentName = newName;

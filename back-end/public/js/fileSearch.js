@@ -1,9 +1,7 @@
 
-var url = "http://localhost:3000/api/authenticate-token";
+var url = "/api/authenticate-token";
 var authenticated = false;
 var bearer = 'Bearer ' + localStorage.getItem('bearer')
-console.log('bearer3')
-console.log(bearer);
 
 fetch(url, {
         method: 'GET',
@@ -16,22 +14,22 @@ fetch(url, {
         }
     })
     .catch(err =>{
-    console.log('error')
     console.log(err)
     })
     .then(res =>
         {
-            console.log(res.statusText)
-
-            if(res.status != 200)
+            if(res.status != 200){
                 window.location.replace('/login')
-            else
-                authenticated = true;
+            }
+            else{
+                //Authenticated
+                showTable();
+            }
         }
     );
 
 
-if(authenticated){
+function showTable(){
     $(document).ready(function() {
     $('table').bootstrapTable({
         data: mydata

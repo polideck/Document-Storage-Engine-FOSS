@@ -114,8 +114,6 @@ const { exit } = require('process');
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
-    console.log('TESTTEST123')
-    console.log(authHeader);
 
     if(authHeader == null){
         return res.sendStatus(401);
@@ -123,16 +121,18 @@ function authenticateToken(req, res, next) {
 
     const token = authHeader && authHeader.split(' ')[1]
   
-    if (token == null) return res.sendStatus(401)
+    if (token == null){
+        return res.sendStatus(401)
+    }
   
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-      console.log(err)
-  
-      if (err) return res.sendStatus(403)
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {  
+      if (err){
+          return res.sendStatus(403)
+      }
   
       req.user = user
-  
-      next()
+
+      return res.sendStatus(200);
     })
   }
 

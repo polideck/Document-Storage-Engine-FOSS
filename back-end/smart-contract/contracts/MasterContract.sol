@@ -42,9 +42,33 @@ contract MasterContract {
     //Function for revision
 
     //Function needed to get all or specifically searched document contracts from specified owner (FOR SEARCH/VIEWING)
+    //Note: Add in onlyOwner modifier
+    function getContractsByOwner(address ownerAddress) public view returns(address[] memory){
+        return owners[ownerAddress];
+    }
 
-    //Function needed to download most recent document revision (actually getting hash) (FOR DOWNLOAD)
+    //Note: Add in onlyOwner modifier
+    // function getSpecificDocument(address ownerAddress, address documentAddress) public view returns(address[] memory){
+    //     return owners[ownerAddress].where
+    // }
+
+    //Function needed to download most recent document revision (actually getting hash) (FOR DOWNLOAD) -- Dont need this
+
 
     //Function needed to grab most recent document revision to delete (FOR DELETE)
 
+
+    //Note: Add in onlyOwner modifier
+    //Deletion
+    function deleteOwnerFromDocument(address owner, address document) public{
+        address[] memory documentAddresses = owners[owner];
+        for(uint i = 0; i < documentAddresses.length; i++){
+            if(documentAddresses[i] == document){
+                documentAddresses[i] = documentAddresses[documentAddresses.length - 1];
+                break;
+            }
+        }
+        
+        owners[owner] = documentAddresses[];
+    }
 }

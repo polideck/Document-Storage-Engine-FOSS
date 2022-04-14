@@ -8,7 +8,7 @@
 import "./DocumentContract.sol";
 
 contract MasterContract {
-    address constant private serverAddress = 0xE0f5206BBD039e7b0592d8918820024e2a7437b9;
+    address constant private serverAddress = 0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF;
     modifier onlyOwner(){
         require(msg.sender == serverAddress);
         _;

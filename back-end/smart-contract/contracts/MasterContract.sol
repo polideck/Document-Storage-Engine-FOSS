@@ -22,16 +22,16 @@ contract MasterContract {
     function getListOfDocuments(address owner) public view returns(address[] memory){
         return owners[owner];
     }
-    //Function needed to take IPFS hash and make new Document Contract (FOR UPLOAD)
 
     //Note: Add in onlyOwner modifier
     function uploadDocument(string memory ipfsHash, address ownerAddress, string memory documentName) public{
-        owners[ownerAddress].push(
-            address(new DocumentContract(ipfsHash, ownerAddress, documentName))
-            );
+        if(owners[ownerAddress][0] != address(0x0)){
+            owners[ownerAddress].push(address(new DocumentContract(ipfsHash, ownerAddress, documentName)));
+        }
+        else{
+            owners[ownerAddress] = [address(new DocumentContract(ipfsHash, ownerAddress, documentName))];
+        }
     }
-
-    //Function for revision
 
     //Function needed to get all or specifically searched document contracts from specified owner (FOR SEARCH/VIEWING)
     //Note: Add in onlyOwner modifier
@@ -40,7 +40,6 @@ contract MasterContract {
     }
 
     //Note: Add in onlyOwner modifier
-    //Deletion
     function deleteOwnerFromDocument(address owner, address document) public{
         address[] memory documentAddresses = owners[owner];
         for(uint i = 0; i < documentAddresses.length; i++){

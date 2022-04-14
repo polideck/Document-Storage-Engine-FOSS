@@ -21,13 +21,23 @@ contract DocumentContract {
     //Hashes to previous versions of document
     RevisionDocument[] public revisions;
 
-    function AppendRevision(string memory newIpfsHash) public{
+    function appendRevision(string memory newIpfsHash) public{
         revisions.push(RevisionDocument({ipfsHash:ipfsHash}));
 
         ipfsHash = newIpfsHash;
     }
 
-    function GetOwners() public view returns(address[] memory){
+    function getOwners() public view returns(address[] memory){
         return ownerAddresses;
+    }
+
+    function deleteOwner(address ownerAddress) public{
+        for(uint i = 0; i < ownerAddresses.length; i++){
+            if(ownerAddress == ownerAddresses[i]){
+                ownerAddresses[i] = ownerAddresses[ownerAddresses.length - 1];
+                ownerAddresses.pop();
+                break;
+            }
+        }
     }
 }

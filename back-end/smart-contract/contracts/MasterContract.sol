@@ -47,11 +47,6 @@ contract MasterContract {
         return owners[ownerAddress];
     }
 
-    //Note: Add in onlyOwner modifier
-    // function getSpecificDocument(address ownerAddress, address documentAddress) public view returns(address[] memory){
-    //     return owners[ownerAddress].where
-    // }
-
     //Function needed to download most recent document revision (actually getting hash) (FOR DOWNLOAD) -- Dont need this
 
 
@@ -65,10 +60,11 @@ contract MasterContract {
         for(uint i = 0; i < documentAddresses.length; i++){
             if(documentAddresses[i] == document){
                 documentAddresses[i] = documentAddresses[documentAddresses.length - 1];
+                delete documentAddresses[documentAddresses.length - 1];
                 break;
             }
         }
-        
-        owners[owner] = documentAddresses[];
+
+        owners[owner] = documentAddresses;
     }
 }

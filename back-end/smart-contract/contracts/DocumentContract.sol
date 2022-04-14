@@ -12,9 +12,9 @@ contract DocumentContract {
 
     string public documentName;
 
-    constructor(string memory _ipfsHash, address[] memory _ownerAddresses, string memory _documentName){
+    constructor(string memory _ipfsHash, address _ownerAddress, string memory _documentName){
         ipfsHash = _ipfsHash;
-        ownerAddresses = _ownerAddresses;
+        ownerAddresses.push(_ownerAddress);
         documentName = _documentName;
     }
     

@@ -8,22 +8,13 @@
 import "./DocumentContract.sol";
 
 contract MasterContract {
-    // struct owner{
-    //     address ownerAddress;
-    //     address[] documentContracts;
-    // }
-
     address constant private serverAddress = 0xE0f5206BBD039e7b0592d8918820024e2a7437b9;
     modifier onlyOwner(){
         require(msg.sender == serverAddress);
         _;
     }
 
-    //Needs to take in public owner address 
-    //owner[] public owners;
-
     //ownerAddress => documentContracts
-
     mapping(address => address[]) public owners;
 
     //Using owner address grab List of Document Contracts
@@ -43,8 +34,9 @@ contract MasterContract {
 
     //Note: Add in onlyOwner modifier
     function uploadDocument(string memory ipfsHash, address ownerAddress, string memory documentName) public{
-        
-        DocumentContract docContract = new DocumentContract(ipfsHash, ownerAddress, documentName);
+        owners[ownerAddress].push(
+            address(new DocumentContract(ipfsHash, ownerAddress, documentName))
+            );
     }
 
     //Function for revision

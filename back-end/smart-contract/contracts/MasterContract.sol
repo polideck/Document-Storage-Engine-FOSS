@@ -21,15 +21,6 @@ contract MasterContract {
     function getListOfDocuments(address owner) public view returns(address[] memory){
         return owners[owner];
     }
-
-    //Document Contracts
-    /*List of Document Contracts:
-    {
-        {DOC_CONTRACT_ADDRESS: NAME_OF_DOCUMENT},
-        {DOC_CONTRACT_ADDRESS: NAME_OF_DOCUMENT},
-        {DOC_CONTRACT_ADDRESS: NAME_OF_DOCUMENT}
-    } */
-
     //Function needed to take IPFS hash and make new Document Contract (FOR UPLOAD)
 
     //Note: Add in onlyOwner modifier
@@ -46,12 +37,6 @@ contract MasterContract {
     function getContractsByOwner(address ownerAddress) public view returns(address[] memory){
         return owners[ownerAddress];
     }
-
-    //Function needed to download most recent document revision (actually getting hash) (FOR DOWNLOAD) -- Dont need this
-
-
-    //Function needed to grab most recent document revision to delete (FOR DELETE)
-
 
     //Note: Add in onlyOwner modifier
     //Deletion

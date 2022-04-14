@@ -2,6 +2,7 @@ pragma solidity ^0.8.13;
 
 contract DocumentContract {
     struct RevisionDocument{
+        string name;
         string ipfsHash;
     }
 
@@ -21,14 +22,17 @@ contract DocumentContract {
     //Hashes to previous versions of document
     RevisionDocument[] public revisions;
 
-    function appendRevision(string memory newIpfsHash) public{
-        revisions.push(RevisionDocument({ipfsHash:ipfsHash}));
-
-        ipfsHash = newIpfsHash;
-    }
-
     function getOwners() public view returns(address[] memory){
         return ownerAddresses;
+    }
+
+    function updateDocument(string memory newIpfsHash, string  memory newName) public{
+        revisions.push(RevisionDocument(
+            {ipfsHash: ipfsHash, name: documentName}
+            ));
+
+        ipfsHash = newIpfsHash;
+        documentName = newName;
     }
 
     function deleteOwner(address ownerAddress) public{

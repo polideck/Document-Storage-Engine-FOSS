@@ -39,47 +39,10 @@ function showTable(){
             $("#blockchain-table tr").filter('tr:not(:first)').filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
-
-            $('table tr td:nth-child(4)').html("<td><button id='download-button' class='mini-gold-button'>Download</button></td>");
-            $('table tr td:nth-child(5)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
-            $('table tr td:nth-child(6)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
-
-            $(".mini-gold-button").click(function() {
-                let info = [];
-                $.each($(this).closest("tr").find("td"), function() {
-                    info.push($(this).text())
-                });
-                
-                if($(this).attr('id') == 'download-button')
-                    download(info);
-    
-                if($(this).attr('id') == 'edit-button')
-                    edit(info);
-                
-                if($(this).attr('id') == 'delete-button')
-                    deleteVal(info);
-            });
+            deployButtons();
         });
 
-        $('table tr td:nth-child(4)').html("<td><button id='download-button' class='mini-gold-button'>Download</button></td>");
-        $('table tr td:nth-child(5)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
-        $('table tr td:nth-child(6)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
-
-        $(".mini-gold-button").click(function() {
-            let info = [];
-            $.each($(this).closest("tr").find("td"), function() {
-                info.push($(this).text())
-            });
-            
-            if($(this).attr('id') == 'download-button')
-                download(info);
-
-            if($(this).attr('id') == 'edit-button')
-                edit(info);
-            
-            if($(this).attr('id') == 'delete-button')
-                deleteVal(info);
-        });
+        deployButtons();
     });
 
 
@@ -290,6 +253,28 @@ function showTable(){
     },
     ];
 
+}
+
+function deployButtons(){
+    $('table tr td:nth-child(4)').html("<td><button id='download-button' class='mini-gold-button'>Download</button></td>");
+    $('table tr td:nth-child(5)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
+    $('table tr td:nth-child(6)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
+
+    $(".mini-gold-button").click(function() {
+        let info = [];
+        $.each($(this).closest("tr").find("td"), function() {
+            info.push($(this).text())
+        });
+        
+        if($(this).attr('id') == 'download-button')
+            download(info);
+
+        if($(this).attr('id') == 'edit-button')
+            edit(info);
+        
+        if($(this).attr('id') == 'delete-button')
+            deleteVal(info);
+    });
 }
 
 function download(info){

@@ -33,12 +33,14 @@ function showTable(){
         $('table').bootstrapTable({
             data: mydata
         });
-        $('table tr td:nth-child(4)').html("<tr><td><button class='mini-gold-button' onclick='edit()'>Edit</button></td></tr>");
-        $('table tr td:nth-child(5)').html("<tr><td><button class='mini-gold-button' onclick='deleteVal()'>Delete</button></td></tr>");
+
+        $('table tr td:nth-child(4)').html("<tr><td><button class='mini-gold-button' onclick='download()'>Download</button></td></tr>");
+        $('table tr td:nth-child(5)').html("<tr><td><button class='mini-gold-button' onclick='edit()'>Edit</button></td></tr>");
+        $('table tr td:nth-child(6)').html("<tr><td><button class='mini-gold-button' onclick='deleteVal()'>Delete</button></td></tr>");
 
         $("#myInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
-            $("#blockchain-table tr").filter('tr:not(:=first)').filter(function() {
+            $("#blockchain-table tr").filter('tr:not(:first)').filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
@@ -252,6 +254,10 @@ function showTable(){
     },
     ];
 
+}
+
+function download(){
+    console.log('download')
 }
 
 function deleteVal(){

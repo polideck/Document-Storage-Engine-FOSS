@@ -34,23 +34,52 @@ function showTable(){
             data: mydata
         });
 
-        const crud = ['Download', 'Edit', 'Delete'];
-
         $("#myInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
             $("#blockchain-table tr").filter('tr:not(:first)').filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
 
-            $('table tr td:nth-child(4)').html("<tr><td><button class='mini-gold-button' onclick='download()'>Download</button></td></tr>");
-            $('table tr td:nth-child(5)').html("<tr><td><button class='mini-gold-button' onclick='edit()'>Edit</button></td></tr>");
-            $('table tr td:nth-child(6)').html("<tr><td><button class='mini-gold-button' onclick='deleteVal()'>Delete</button></td></tr>");
+            $('table tr td:nth-child(4)').html("<td><button id='download-button' class='mini-gold-button'>Download</button></td>");
+            $('table tr td:nth-child(5)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
+            $('table tr td:nth-child(6)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
+
+            $(".mini-gold-button").click(function() {
+                let info = [];
+                $.each($(this).closest("tr").find("td"), function() {
+                    info.push($(this).text())
+                });
+                
+                if($(this).attr('id') == 'download-button')
+                    download(info);
+    
+                if($(this).attr('id') == 'edit-button')
+                    edit(info);
+                
+                if($(this).attr('id') == 'delete-button')
+                    deleteVal(info);
+            });
         });
 
-        $('table tr td:nth-child(4)').html("<tr><td><button class='mini-gold-button' onclick='download()'>Download</button></td></tr>");
-        $('table tr td:nth-child(5)').html("<tr><td><button class='mini-gold-button' onclick='edit()'>Edit</button></td></tr>");
-        $('table tr td:nth-child(6)').html("<tr><td><button class='mini-gold-button' onclick='deleteVal()'>Delete</button></td></tr>");
+        $('table tr td:nth-child(4)').html("<td><button id='download-button' class='mini-gold-button'>Download</button></td>");
+        $('table tr td:nth-child(5)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
+        $('table tr td:nth-child(6)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
 
+        $(".mini-gold-button").click(function() {
+            let info = [];
+            $.each($(this).closest("tr").find("td"), function() {
+                info.push($(this).text())
+            });
+            
+            if($(this).attr('id') == 'download-button')
+                download(info);
+
+            if($(this).attr('id') == 'edit-button')
+                edit(info);
+            
+            if($(this).attr('id') == 'delete-button')
+                deleteVal(info);
+        });
     });
 
 
@@ -263,14 +292,14 @@ function showTable(){
 
 }
 
-function download(){
-    console.log('download')
+function download(info){
+    console.log(info)
 }
 
-function deleteVal(){
-    console.log('del')
+function deleteVal(info){
+    console.log(info)
 }
 
-function edit(){
-    console.log('edit')
+function edit(info){
+    console.log(info)
 }

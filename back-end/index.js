@@ -82,31 +82,6 @@ client.on('error', (err) => {console.log('Redis Client Error', err); exit(1);});
 const ethUtil = require("@metamask/eth-sig-util");
 const { exit } = require('process');
 
-
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization']
-    console.log('TESTTEST123')
-    console.log(authHeader);
-
-    if(authHeader == null){
-        return res.sendStatus(401);
-    }
-
-    const token = authHeader && authHeader.split(' ')[1]
-  
-    if (token == null) return res.sendStatus(401)
-  
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-      console.log(err)
-  
-      if (err) return res.sendStatus(403)
-  
-      req.user = user
-  
-      next()
-    })
-  }
-
 app.get('/', (req, res) => {
     res.redirect('/login')
 });
@@ -166,8 +141,26 @@ app.get('/delete', async (req, res) => {
     //Mark the file as deleted
 });
 
-app.get('/api/authenticate-token', authenticateToken, (req, res) => {
+app.get('/api/authenticate-token', (req, res) => {
+    const authHeader = req.headers['authorization']
 
+    if (authHeader == null){
+        return res.sendStatus(401);
+    }
+
+    const token = authHeader && authHeader.split(' ')[1]
+  
+    if (token == null){
+        return res.sendStatus(401)
+    }
+  
+    jwt.verify(token, process.env.TOKEN_SECRET, (err) => {  
+      if (err){
+          return res.sendStatus(403)
+      }
+
+      return res.sendStatus(200);
+    })
 })
 
 app.get('/api/getNonce', async (req, res) => {
@@ -194,14 +187,10 @@ app.get('/api/getJWT', async (req, res) => {
 
 
             //Generate JWT
-            console.log(process.env.TOKEN_SECRET);
-
             const expiration = Date.now() + 1800;
 
             const token = jwt.sign({publicAddress: address, exp: expiration}, process.env.TOKEN_SECRET);
 
-            console.log('token')
-            console.log(token)
             //Send Back JWT token
             res.json(token);
         } else {

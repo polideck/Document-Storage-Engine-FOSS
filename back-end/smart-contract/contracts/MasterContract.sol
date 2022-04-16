@@ -1,6 +1,6 @@
-pragma solidity ^0.8.13;
-import "./DocumentContract.sol";
+pragma solidity >=0.4.22 <0.9.0;
 
+import "./DocumentContract.sol";
 /* How Master Contract Moves:
     Owner Address (Used to index for each user)
         List of Document Contracts (Appends new Document Contract for every upload based on IPFS hash) (Used to search/view all documents on main search page)

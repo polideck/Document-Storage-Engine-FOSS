@@ -1,4 +1,4 @@
-pragma solidity ^0.8.13;
+pragma solidity >=0.4.22 <0.9.0;
 
 contract DocumentContract {
     struct RevisionDocument{
@@ -13,7 +13,7 @@ contract DocumentContract {
 
     string public documentName;
 
-    constructor(string memory _ipfsHash, address _ownerAddress, string memory _documentName){
+    constructor(string memory _ipfsHash, address _ownerAddress, string memory _documentName) public{
         ipfsHash = _ipfsHash;
         ownerAddresses.push(_ownerAddress);
         documentName = _documentName;

@@ -25,4 +25,8 @@ contract DocumentContract {
     function getIpfsHashAndDocumentName() public view returns(string[2] memory){
         return [ipfsHash, documentName];
     }
+
+    function getRevisionDocument() public view returns(RevisionDocument[] memory){
+        return revisions;
+    }
 }

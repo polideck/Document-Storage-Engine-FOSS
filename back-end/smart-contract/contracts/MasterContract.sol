@@ -3,23 +3,23 @@ import "./DocumentContract.sol";
 
 contract MasterContract {
     address private serverAddress = 0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF;
-    modifier onlyOwner(){
-        require(msg.sender == serverAddress);
-        _;
-    }
+    // modifier onlyOwner(){
+    //     require(msg.sender == serverAddress);
+    //     _;
+    // }
 
     //ownerAddress => documentContracts
     mapping(address => DocumentContract[]) public owners;
 
-    function getListOfDocuments(address owner) public onlyOwner view returns(DocumentContract[] memory){
+    function getListOfDocuments(address owner) public view returns(DocumentContract[] memory){
         return owners[owner];
     }
 
-    function uploadDocument(string memory ipfsHash, address ownerAddress, string memory documentName) public onlyOwner{
+    function uploadDocument(string memory ipfsHash, address ownerAddress, string memory documentName) public{
         owners[ownerAddress].push(new DocumentContract(ipfsHash, documentName));
     }
 
-    function deleteOwnerFromDocument(address owner, DocumentContract document) public onlyOwner{
+    function deleteOwnerFromDocument(address owner, DocumentContract document) public{
         DocumentContract[] memory documents = owners[owner];
         for(uint i = 0; i < documents.length; i++){
             if(documents[i] == document){
@@ -32,7 +32,7 @@ contract MasterContract {
         owners[owner] = documents;
     }
 
-    function setServerAddress(address newAddress) public onlyOwner{
+    function setServerAddress(address newAddress) public{
         serverAddress = newAddress;
     }
 }

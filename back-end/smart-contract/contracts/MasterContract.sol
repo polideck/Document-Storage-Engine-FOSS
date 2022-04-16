@@ -19,10 +19,6 @@ contract MasterContract {
         owners[ownerAddress].push(new DocumentContract(ipfsHash, documentName));
     }
 
-    function getContractsByOwner(address ownerAddress) public onlyOwner view returns(DocumentContract[] memory){
-        return owners[ownerAddress];
-    }
-
     function deleteOwnerFromDocument(address owner, DocumentContract document) public onlyOwner{
         DocumentContract[] memory documents = owners[owner];
         for(uint i = 0; i < documents.length; i++){

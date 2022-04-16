@@ -29,9 +29,10 @@ fetch(url, {
     );
 
 async function showTable(){
+    let data = await getData();
     $(document).ready(function() {
         $('table').bootstrapTable({
-            data: mydata
+            data: data
         });
 
         $("#myInput").on("keyup", function() {
@@ -252,13 +253,21 @@ async function showTable(){
         'CreatedBy': 'asdfsdfFDFCdc%3tfdsafR4'
     },
     ];
+}
 
+async function getData(){
+    console.log('getData')
+    let res = await fetch(`/get_all_files?address=${localStorage.getItem('address')}`, {
+            method: "GET", 
+        })
+
+    console.log(res);
 }
 
 function deployButtons(){
-    $('table tr td:nth-child(4)').html("<td><button id='download-button' class='mini-gold-button'>Download</button></td>");
-    $('table tr td:nth-child(5)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
-    $('table tr td:nth-child(6)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
+    $('table tr td:nth-child(3)').html("<td><button id='download-button' class='mini-gold-button'>Download</button></td>");
+    $('table tr td:nth-child(4)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
+    $('table tr td:nth-child(5)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
 
     $(".mini-gold-button").click(async function() {
         let info = [];

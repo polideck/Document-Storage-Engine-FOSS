@@ -17,7 +17,12 @@ contract MasterContract {
 
         for(uint i = 0; i < contracts.length; i++){
             string[2] memory hashAndDocument = contracts[i].getIpfsHashAndDocumentName();
-            output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), '"}, '));
+            if(i != contracts.length - 1){
+                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), '"}, '));
+            }
+            else{
+                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), '"} '));
+            }
         }
 
         output = string(bytes.concat(bytes(output), ']}'));

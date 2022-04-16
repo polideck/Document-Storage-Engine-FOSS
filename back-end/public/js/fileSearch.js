@@ -29,22 +29,32 @@ fetch(url, {
     );
 
 async function showTable(){
-    let data = await getData();
-    $(document).ready(function() {
-        $('table').bootstrapTable({
-            data: data
-        });
+    await fetch(`/get_all_files?address=${localStorage.getItem('address')}`, {
+        method: "GET", 
+    })
+    .then(response => {
+        if(response.ok) {
+            return response.json();
+        }
+    }).then(data => {
+        if(data) {
+            $(document).ready(function() {
+                $('table').bootstrapTable({
+                    data: data["Files"]
+                });
 
-        $("#myInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#blockchain-table tr").filter('tr:not(:first)').filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                $("#myInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#blockchain-table tr").filter('tr:not(:first)').filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                    deployButtons();
+                });
+                deployButtons();
             });
-            deployButtons();
-        });
+        }
+    }).catch(err => console.error(err));
 
-        deployButtons();
-    });
 
 
     // JSON data
@@ -253,15 +263,6 @@ async function showTable(){
         'CreatedBy': 'asdfsdfFDFCdc%3tfdsafR4'
     },
     ];
-}
-
-async function getData(){
-    console.log('getData')
-    let res = await fetch(`/get_all_files?address=${localStorage.getItem('address')}`, {
-            method: "GET", 
-        })
-
-    console.log(res);
 }
 
 function deployButtons(){

@@ -126,19 +126,25 @@ const addIpfsFile = async (fileName,filePath)=>{
 
 app.get('/file', async (req, res) => {
     //Replace this with actual file name
-    var file_path = 'public/downloads/test.jpeg'
+    var file_path = 'public/downloads/test.jpeg';
     const data = uint8ArrayConcat(await all(ipfs_client.cat(req.query.cid)))
     fs.writeFile(file_path, data, function(err, result) {
         res.download(file_path);
-      });    
+      });
 });
 
-app.get('/delete', async (req, res) => {
+app.patch('/editFile', async (req, res) => {
+    res.sendStatus(200);
+});
+
+app.delete('/delete', async (req, res) => {
     var current_cid = req.query.cid;
     web3.eth.getAccounts().then((result) => {
         console.log(result)
     });
     //Mark the file as deleted
+
+    
 });
 
 app.get('/api/authenticate-token', (req, res) => {

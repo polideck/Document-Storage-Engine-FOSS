@@ -23,7 +23,7 @@ const upload = multer({ dest: 'public/uploads' });
 
 // connect to the default API address http://localhost:5001
 const ipfs_client = create()
-
+console.log(CONTRACT_ADDRESS)
 // call Core API methods
 //const { cid } = await ipfs_client.add('Hello world!')
 
@@ -93,6 +93,16 @@ app.get('/login', (req, res) => {
 app.get('/search', (req, res) => {
     res.sendFile(path.join(__dirname,'public/searchFiles.html'));
 });
+
+app.get('/get_all_files', async (req, res) => {
+    console.log("hit")
+    const address = req.query.address
+    const contractInstance = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+    console.log(address)
+    const data = await contractInstance.methods.getListOfDocuments(address).call();
+    res.send(data)
+});
+
 
 app.get('/fileupload', (req, res) => {
     res.sendFile(path.join(__dirname,'./public/fileupload.html'));

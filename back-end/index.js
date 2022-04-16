@@ -23,9 +23,13 @@ const upload = multer({ dest: 'public/uploads' });
 
 // connect to the default API address http://localhost:5001
 const ipfs_client = create()
-console.log(CONTRACT_ADDRESS)
+const contractInstance = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
 // call Core API methods
 //const { cid } = await ipfs_client.add('Hello world!')
+const account = {
+    address : "0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF",
+    privateKey : "0x8653be3cbd45e2a5de209b52847b52210cf0e1d8ba7eba6ad53f632457085f26"
+    };
 
 if(process.env.AESKEY == "" && process.env.IV == "" && process.env.TOKEN_SECRET == ""){
     let parsedFile = envfile.parse(sourcePath);
@@ -95,10 +99,7 @@ app.get('/search', (req, res) => {
 });
 
 app.get('/get_all_files', async (req, res) => {
-    console.log("hit")
     const address = req.query.address
-    const contractInstance = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-    console.log(address)
     const data = await contractInstance.methods.getListOfDocuments(address).call();
     res.send(data)
 });
@@ -112,13 +113,31 @@ app.post('/add',(req,res)=>{
     const file = req.files.file;
     const fileName = file.name;
     const filePath = 'public/uploads/'+fileName;
-    
+    const senderAddress = req.body.address
     file.mv(filePath,async(err)=>{
         if(err){
             console.log("error : while uploading file");
             return res.status(500).send(err);
         }
         const fileHash = await addIpfsFile (fileName,filePath);
+
+        //Blockchain interaction
+        const functionAbi = contractInstance._jsonInterface.find(e => {
+            return e.name === "uploadDocument";
+          });
+        const functionArgs = web3.eth.abi
+        .encodeParameters(functionAbi.inputs, [fileHash.toString(),senderAddress,fileName])
+        .slice(2);
+        const functionParams = {
+            to: CONTRACT_ADDRESS,
+            data: functionAbi.signature + functionArgs,
+            gas: "3000000"  //max number of gas units the tx is allowed to use
+          };
+        const signedTx = await web3.eth.accounts.signTransaction(functionParams, account.privateKey);
+        console.log("sending the txn")
+        const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        console.log("tx transactionHash: " + txReceipt.transactionHash);
+        console.log("tx contractAddress: " + txReceipt.contractAddress);
         fs.unlink(filePath,(err)=>{
             if(err) console.log(err);
         })
@@ -135,8 +154,7 @@ const addIpfsFile = async (fileName,filePath)=>{
 }
 
 app.get('/file', async (req, res) => {
-    //Replace this with actual file name
-    var file_path = 'public/downloads/test.jpeg';
+    var file_path = 'public/downloads/'+req.query.filename;
     const data = uint8ArrayConcat(await all(ipfs_client.cat(req.query.cid)))
     fs.writeFile(file_path, data, function(err, result) {
         res.download(file_path);
@@ -149,9 +167,6 @@ app.patch('/editFile', async (req, res) => {
 
 app.delete('/delete', async (req, res) => {
     var current_cid = req.query.cid;
-    web3.eth.getAccounts().then((result) => {
-        console.log(result)
-    });
     //Mark the file as deleted
 
     
@@ -219,14 +234,6 @@ app.get('/api/getJWT', async (req, res) => {
         res.sendStatus(500);
     }
 });
-
-async function startWeb3() {
-    const accounts = await web3.eth.getAccounts().then((result) => {
-        console.log(result)
-    });
-    const contractList = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-}
-startWeb3();
 
 app.listen(port, () => {
     console.log(`Polideck Document Storage Engine is running on localhost:${port}`)

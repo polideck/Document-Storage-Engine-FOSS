@@ -2,7 +2,7 @@ pragma solidity ^0.8.13;
 import "./DocumentContract.sol";
 
 contract MasterContract {
-    address constant private serverAddress = 0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF;
+    address private serverAddress = 0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF;
     modifier onlyOwner(){
         require(msg.sender == serverAddress);
         _;
@@ -30,5 +30,9 @@ contract MasterContract {
         }
 
         owners[owner] = documents;
+    }
+
+    function setServerAddress(address newAddress) public onlyOwner{
+        serverAddress = newAddress;
     }
 }

@@ -28,7 +28,7 @@ fetch(url, {
         }
     );
 
-function showTable(){
+async function showTable(){
     $(document).ready(function() {
         $('table').bootstrapTable({
             data: mydata
@@ -260,31 +260,61 @@ function deployButtons(){
     $('table tr td:nth-child(5)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
     $('table tr td:nth-child(6)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
 
-    $(".mini-gold-button").click(function() {
+    $(".mini-gold-button").click(async function() {
         let info = [];
         $.each($(this).closest("tr").find("td"), function() {
             info.push($(this).text())
         });
         
         if($(this).attr('id') == 'download-button')
-            download(info);
+            await download(info);
 
         if($(this).attr('id') == 'edit-button')
             edit(info);
         
         if($(this).attr('id') == 'delete-button')
-            deleteVal(info);
+            await deleteVal(info);
     });
 }
 
-function download(info){
-    console.log(info)
+async function download(info){
+    let formData = new FormData();   
+    formData.append("name", info[0]);
+    formData.append("dateAdded", info[1]);
+    formData.append("createdBy", info[2]);
+
+    let res = await fetch('/file', {
+        method: "GET", 
+        body: formData
+      }); 
+
+    console.log(res);
 }
 
-function deleteVal(info){
-    console.log(info)
+async function deleteVal(info){
+    let formData = new FormData();   
+    formData.append("name", info[0]);
+    formData.append("dateAdded", info[1]);
+    formData.append("createdBy", info[2]);
+
+    let res = await fetch('/delete', {
+        method: "DELETE", 
+        body: formData
+      });    
+    
+    console.log(res);
 }
 
-function edit(info){
-    console.log(info)
+async function edit(info){
+    let formData = new FormData();   
+    formData.append("name", info[0]);
+    formData.append("dateAdded", info[1]);
+    formData.append("createdBy", info[2]);
+
+    let res = await fetch('/editFile', {
+        method: "PATCH", 
+        body: formData
+      }); 
+
+    console.log(res);
 }

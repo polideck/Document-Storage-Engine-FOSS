@@ -14,39 +14,10 @@ const all = require('it-all')
 const { create, globSource } = require('ipfs-http-client')
 var multer  =   require('multer');
 const Web3 = require('web3');
-
-const abi = [
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "data",
-				"type": "string"
-			}
-		],
-		"name": "set",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "get",
-		"outputs": [
-			{
-				"name": "",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	}
-]
+const {CONTRACT_ADDRESS,CONTRACT_ABI} = require('./config');
 
 const web3 = new Web3('http://localhost:8545');
+
 
 const upload = multer({ dest: 'public/uploads' });
 
@@ -90,7 +61,7 @@ const app = express()
 app.use(bodyparser.urlencoded({extended: true}));
 
 app.use(express.static("public"));
-const port = 3000
+const port = 6969
 app.use(fileUpload());
 app.use(express.json());
 
@@ -168,10 +139,9 @@ app.patch('/editFile', async (req, res) => {
 
 app.delete('/delete', async (req, res) => {
     var current_cid = req.query.cid;
-
-    res.sendStatus(200);
-
-    console.log(req.body.name)
+    web3.eth.getAccounts().then((result) => {
+        console.log(result)
+    });
     //Mark the file as deleted
 
     
@@ -240,6 +210,14 @@ app.get('/api/getJWT', async (req, res) => {
     }
 });
 
+async function startWeb3() {
+    const accounts = await web3.eth.getAccounts().then((result) => {
+        console.log(result)
+    });
+    const contractList = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
+}
+startWeb3();
+
 app.listen(port, () => {
     console.log(`Polideck Document Storage Engine is running on localhost:${port}`)
 })
@@ -250,3 +228,7 @@ async function getNonce(address) {
     const nonce = await client.get(address);
     return nonce;
 }
+
+//besu --rpc-http-enabled --genesis-file=/home/capstone/Documents/besu-22.1.0/build/distributions/besu-22.1.0/genesis.json
+//besu --config-file=besu-config.toml --rpc-http-enabled
+//besu --network=dev --miner-enabled --miner-coinbase=0xfe3b557e8fb62b89f4916b721be55ceb828dbd73 --rpc-http-cors-origins="all" --host-allowlist="*" --rpc-ws-enabled --rpc-http-enabled --data-path=/tmp/tmpDatdir

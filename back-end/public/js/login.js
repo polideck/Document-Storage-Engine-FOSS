@@ -42,7 +42,7 @@ async function signNonce(publicAddress, nonce){
         domain: {
           name: 'Polideck Login',
           version: '1',
-          chainId: '1',
+          chainId: '1337',
           verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
         },
         message: {

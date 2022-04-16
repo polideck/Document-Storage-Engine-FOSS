@@ -6,24 +6,13 @@ contract DocumentContract {
         string ipfsHash;
     }
 
-    //List Document Revisions and their respective hashes
-    //Want an array of document versions
     string public ipfsHash;
-    address[] public ownerAddresses;
-
     string public documentName;
-
-    constructor(string memory _ipfsHash, address _ownerAddress, string memory _documentName){
-        ipfsHash = _ipfsHash;
-        ownerAddresses.push(_ownerAddress);
-        documentName = _documentName;
-    }
-    
-    //Hashes to previous versions of document
     RevisionDocument[] public revisions;
 
-    function getOwners() public view returns(address[] memory){
-        return ownerAddresses;
+    constructor(string memory _ipfsHash, string memory _documentName){
+        ipfsHash = _ipfsHash;
+        documentName = _documentName;
     }
 
     function updateDocument(string memory newIpfsHash, string  memory newName) public{
@@ -31,15 +20,5 @@ contract DocumentContract {
 
         ipfsHash = newIpfsHash;
         documentName = newName;
-    }
-
-    function deleteOwner(address ownerAddress) public{
-        for(uint i = 0; i < ownerAddresses.length; i++){
-            if(ownerAddress == ownerAddresses[i]){
-                ownerAddresses[i] = ownerAddresses[ownerAddresses.length - 1];
-                ownerAddresses.pop();
-                break;
-            }
-        }
     }
 }

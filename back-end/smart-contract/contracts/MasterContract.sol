@@ -19,23 +19,18 @@ contract MasterContract {
     //ownerAddress => documentContracts
     mapping(address => DocumentContract[]) public owners;
 
-    //Using owner address grab List of Document Contracts
     function getListOfDocuments(address owner) public onlyOwner view returns(DocumentContract[] memory){
         return owners[owner];
     }
 
-    //Note: Add in onlyOwner modifier
     function uploadDocument(string memory ipfsHash, address ownerAddress, string memory documentName) public onlyOwner{
-        owners[ownerAddress].push(new DocumentContract(ipfsHash, ownerAddress, documentName));
+        owners[ownerAddress].push(new DocumentContract(ipfsHash, documentName));
     }
 
-    //Function needed to get all or specifically searched document contracts from specified owner (FOR SEARCH/VIEWING)
-    //Note: Add in onlyOwner modifier
     function getContractsByOwner(address ownerAddress) public onlyOwner view returns(DocumentContract[] memory){
         return owners[ownerAddress];
     }
 
-    //Note: Add in onlyOwner modifier
     function deleteOwnerFromDocument(address owner, DocumentContract document) public onlyOwner{
         DocumentContract[] memory documents = owners[owner];
         for(uint i = 0; i < documents.length; i++){

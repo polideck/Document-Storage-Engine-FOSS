@@ -1,0 +1,6 @@
+cd /home/capstone/Documents/polideck-prod/back-end/smart-contract
+node compile.js
+cd contracts 
+solc MasterContract.sol --bin --abi -o build
+cd ..  
+node upload_contract.js 

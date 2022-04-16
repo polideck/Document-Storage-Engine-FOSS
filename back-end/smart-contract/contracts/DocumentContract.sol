@@ -1,4 +1,5 @@
 pragma solidity >=0.4.22 <0.9.0;
+pragma experimental ABIEncoderV2;
 
 contract DocumentContract {
     struct RevisionDocument{
@@ -22,6 +23,7 @@ contract DocumentContract {
         documentName = newName;
     }
 
+    //Needs experimental pragma --> warned not to use
     function getIpfsHashAndDocumentName() public view returns(string[2] memory){
         return [ipfsHash, documentName];
     }

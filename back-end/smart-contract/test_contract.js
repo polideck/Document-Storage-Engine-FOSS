@@ -4,13 +4,18 @@ const Web3 = require('web3');
 
 // member1 details
 const host = "http://127.0.0.1:8545";
-const contractAddress = "0x0df696240A730Cb52302311b25F891C3ab28e2FF"
+const contractAddress = "0x3fE87Dc699D390BdE976636004229830cA89C8dA"
+
+// const account = {
+//     address : "0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF",
+//     privateKey : "0x8653be3cbd45e2a5de209b52847b52210cf0e1d8ba7eba6ad53f632457085f26"
+//     };
 
 const account = {
-    address : "0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF",
-    privateKey : "0x8653be3cbd45e2a5de209b52847b52210cf0e1d8ba7eba6ad53f632457085f26"
+    address : "0xfe3b557e8fb62b89f4916b721be55ceb828dbd73",
+    privateKey : "0x8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63"
     };
-const abi = [{"constant":false,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"document","type":"address"}],"name":"deleteOwnerFromDocument","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"ownerAddress","type":"address"}],"name":"getContractsByOwner","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"getListOfDocuments","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"owners","outputs":[{"internalType":"address","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"string","name":"ipfsHash","type":"string"},{"internalType":"address","name":"ownerAddress","type":"address"},{"internalType":"string","name":"documentName","type":"string"}],"name":"uploadDocument","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}]
+const abi = [{"constant":false,"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"contract DocumentContract","name":"document","type":"address"}],"name":"deleteOwnerFromDocument","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"getListOfDocuments","outputs":[{"internalType":"contract DocumentContract[]","name":"","type":"address[]"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"internalType":"address","name":"","type":"address"},{"internalType":"uint256","name":"","type":"uint256"}],"name":"owners","outputs":[{"internalType":"contract DocumentContract","name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"internalType":"address","name":"newAddress","type":"address"}],"name":"setServerAddress","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"internalType":"string","name":"ipfsHash","type":"string"},{"internalType":"address","name":"ownerAddress","type":"address"},{"internalType":"string","name":"documentName","type":"string"}],"name":"uploadDocument","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"}]
 // abi and bytecode generated from simplestorage.sol:
 // > solcjs --bin --abi simplestorage.sol
 const contractJsonPath = path.resolve(__dirname, './','contracts','MasterContract.json');
@@ -46,7 +51,7 @@ async function getValueAtAddress(host, deployedContractAbi, deployedContractAddr
 const functionParams = {
   to: deployedContractAddress,
   data: functionAbi.signature + functionArgs,
-  gas: "0x2CA51"  //max number of gas units the tx is allowed to use
+  gas: "3000000"  //max number of gas units the tx is allowed to use
 };
 console.log(functionParams)
 const signedTx = await web3.eth.accounts.signTransaction(functionParams, account.privateKey);

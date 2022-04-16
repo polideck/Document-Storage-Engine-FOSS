@@ -21,4 +21,8 @@ contract DocumentContract {
         ipfsHash = newIpfsHash;
         documentName = newName;
     }
+
+    function getIpfsHashAndDocumentName() public view returns(string[2] memory){
+        return [ipfsHash, documentName];
+    }
 }

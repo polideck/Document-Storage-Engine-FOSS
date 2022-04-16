@@ -19,7 +19,7 @@ async function loginWithWallet() {
         return;
     }
 
-    publicAddress = window.ethereum.selectedAddress;
+    let publicAddress = window.ethereum.selectedAddress;
     let url = new URL('/api/getNonce', window.location.origin)
     let params = { publicAddress: publicAddress }
     url.search = new URLSearchParams(params);
@@ -91,6 +91,7 @@ async function signNonce(publicAddress, nonce){
             result => {
               // localStorage.setItem('refresh', )
               localStorage.setItem('bearer', result)
+              localStorage.setItem('address', publicAddress)
               window.location.replace('/search')
             }
 

@@ -6,6 +6,7 @@ async function uploadFile() {
     let formData = new FormData();   
 
     formData.append("file", fileupload.files[0]);
+    formData.append('address', localStorage.getItem('address'));
 
     await fetch('/add', {
       method: "POST", 

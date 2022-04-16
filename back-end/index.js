@@ -16,7 +16,7 @@ var multer  =   require('multer');
 const Web3 = require('web3');
 const {CONTRACT_ADDRESS,CONTRACT_ABI} = require('./config');
 
-const web3 = new Web3('http://localhost:8545');
+const web3 = new Web3('http://192.168.100.50:8545');
 
 
 const upload = multer({ dest: 'public/uploads' });

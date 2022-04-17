@@ -38,6 +38,9 @@ async function showTable(){
         }
     }).then(data => {
         if(data) {
+            for(var i=0; i< data["Files"].length; i++) {
+                data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
+            }
             $(document).ready(function() {
                 $('table').bootstrapTable({
                     data: data["Files"]
@@ -48,9 +51,7 @@ async function showTable(){
                     $("#blockchain-table tr").filter('tr:not(:first)').filter(function() {
                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
-                    deployButtons();
                 });
-                deployButtons();
             });
         }
     }).catch(err => console.error(err));
@@ -266,7 +267,7 @@ async function showTable(){
 }
 
 function deployButtons(){
-    $('table tr td:nth-child(3)').html("<td><button id='download-button' class='mini-gold-button'>Download</button></td>");
+    $('table tr td:nth-child(3)').html("<td><a id='download-button' class='mini-gold-button'>Download</a></td>");
     $('table tr td:nth-child(4)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
     $('table tr td:nth-child(5)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
 
@@ -288,14 +289,10 @@ function deployButtons(){
 }
 
 async function download(info){
-    let formData = new FormData();   
-    formData.append("name", info[0]);
-    formData.append("dateAdded", info[1]);
-    formData.append("createdBy", info[2]);
+    console.log(info)
 
-    let res = await fetch('/file', {
+    let res = await fetch(`/file?cid=${info[1]}&filename=${info[0]}`, {
         method: "GET", 
-        body: formData
       }); 
 
     console.log(res);

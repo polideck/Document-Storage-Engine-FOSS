@@ -1,4 +1,128 @@
-const CONTRACT_ADDRESS = '0xfAf208e7094d57B692716b0250a04Bd8EBd26FbC';
+const CONTRACT_ADDRESS = '0xf1aD66EAD415E3c1E47FaB0b81c29F89AEb21a76';
+const DOCUMENT_CONTRACT_ABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_ipfsHash",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_documentName",
+				"type": "string"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "documentName",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getIpfsHashAndDocumentName",
+		"outputs": [
+			{
+				"internalType": "string[2]",
+				"name": "",
+				"type": "string[2]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getRevisionDocument",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "ipfsHash",
+						"type": "string"
+					}
+				],
+				"internalType": "struct DocumentContract.RevisionDocument[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "ipfsHash",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "revisions",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "ipfsHash",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "newIpfsHash",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "newName",
+				"type": "string"
+			}
+		],
+		"name": "updateDocument",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]
 
 const CONTRACT_ABI = [
 	{
@@ -101,5 +225,6 @@ const CONTRACT_ABI = [
 ]
 module.exports = {
     CONTRACT_ADDRESS,
-    CONTRACT_ABI
+    CONTRACT_ABI,
+    DOCUMENT_CONTRACT_ABI
   }

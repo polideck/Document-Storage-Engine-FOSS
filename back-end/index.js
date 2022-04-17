@@ -14,7 +14,7 @@ const all = require('it-all')
 const { create, globSource } = require('ipfs-http-client')
 var multer  =   require('multer');
 const Web3 = require('web3');
-const {CONTRACT_ADDRESS,CONTRACT_ABI} = require('./config');
+const {DOCUMENT_CONTRACT_ABI,CONTRACT_ADDRESS,CONTRACT_ABI} = require('./config');
 
 const web3 = new Web3('http://192.168.100.50:8545');
 
@@ -165,10 +165,27 @@ app.patch('/editFile', async (req, res) => {
     res.sendStatus(200);
 });
 
-app.delete('/delete', async (req, res) => {
-    var current_cid = req.query.cid;
-    //Mark the file as deleted
+app.get('/delete', async (req, res) => {
+    var owner = req.query.address;
+    var document = req.query.document;
 
+    //Blockchain interaction
+    const functionAbi = contractInstance._jsonInterface.find(e => {
+        return e.name === "deleteOwnerFromDocument";
+      });
+    const functionArgs = web3.eth.abi
+    .encodeParameters(functionAbi.inputs, [owner,document])
+    .slice(2);
+    const functionParams = {
+        to: CONTRACT_ADDRESS,
+        data: functionAbi.signature + functionArgs,
+        gas: "3000000"  //max number of gas units the tx is allowed to use
+      };
+    const signedTx = await web3.eth.accounts.signTransaction(functionParams, account.privateKey);
+    console.log("sending the txn")
+    const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    console.log("tx transactionHash: " + txReceipt.transactionHash);
+    console.log("tx contractAddress: " + txReceipt.contractAddress);
     
 });
 

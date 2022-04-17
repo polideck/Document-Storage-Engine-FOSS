@@ -18,10 +18,10 @@ contract MasterContract {
         for(uint i = 0; i < contracts.length; i++){
             string[2] memory hashAndDocument = contracts[i].getIpfsHashAndDocumentName();
             if(i != contracts.length - 1){
-                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), '"}, '));
+                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), ', "Address: "', toBytes(address(contracts[i])), '"}, '));
             }
             else{
-                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), '"} '));
+                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]),  ', "Address: "', toBytes(address(contracts[i])), '"} '));
             }
         }
 
@@ -49,5 +49,15 @@ contract MasterContract {
 
     function setServerAddress(address newAddress) public{
         serverAddress = newAddress;
+    }
+    
+    function toBytes(address a) public pure returns (bytes memory b){
+        assembly {
+            let m := mload(0x40)
+            a := and(a, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
+            mstore(add(m, 20), xor(0x140000000000000000000000000000000000000000, a))
+            mstore(0x40, add(m, 52))
+            b := m
+        }
     }
 }

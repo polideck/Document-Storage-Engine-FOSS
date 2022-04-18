@@ -131,7 +131,7 @@ app.post('/add',(req,res)=>{
         const functionParams = {
             to: CONTRACT_ADDRESS,
             data: functionAbi.signature + functionArgs,
-            gas: "3000000"  //max number of gas units the tx is allowed to use
+            gas: "4000000"  //max number of gas units the tx is allowed to use
           };
         const signedTx = await web3.eth.accounts.signTransaction(functionParams, account.privateKey);
         console.log("sending the txn")

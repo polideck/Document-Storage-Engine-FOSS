@@ -18,10 +18,10 @@ contract MasterContract {
         for(uint i = 0; i < contracts.length; i++){
             string[2] memory hashAndDocument = contracts[i].getIpfsHashAndDocumentName();
             if(i != contracts.length - 1){
-                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), ', "Address: "', toBytes(address(contracts[i])), '"}, '));
+                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), '"}, '));
             }
             else{
-                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]),  ', "Address: "', toBytes(address(contracts[i])), '"} '));
+                output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), '"} '));
             }
         }
 
@@ -50,14 +50,15 @@ contract MasterContract {
     function setServerAddress(address newAddress) public{
         serverAddress = newAddress;
     }
-    
-    function toBytes(address a) public pure returns (bytes memory b){
-        assembly {
-            let m := mload(0x40)
-            a := and(a, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)
-            mstore(add(m, 20), xor(0x140000000000000000000000000000000000000000, a))
-            mstore(0x40, add(m, 52))
-            b := m
+
+    function getAddressFromHash(address owner, string memory ipfsHash) public view returns(address){
+        for(uint i = 0; i < owners[owner].length; i ++){
+            if(keccak256(bytes(owners[owner][i].getIpfsHashAndDocumentName()[0])) == keccak256(bytes(ipfsHash))){
+                return address(owners[owner][i]);
+            }
         }
+
+        //No matches
+        return address(0x0);
     }
 }

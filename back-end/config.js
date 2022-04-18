@@ -1,4 +1,4 @@
-const CONTRACT_ADDRESS = '0xf1aD66EAD415E3c1E47FaB0b81c29F89AEb21a76';
+const CONTRACT_ADDRESS = '0xA5CA042231d947352c8D83c0c37eb32EA579B59D';
 const DOCUMENT_CONTRACT_ABI = [
 	{
 		"inputs": [
@@ -141,6 +141,30 @@ const CONTRACT_ABI = [
 		"name": "deleteOwnerFromDocument",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "ipfsHash",
+				"type": "string"
+			}
+		],
+		"name": "getAddressFromHash",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{

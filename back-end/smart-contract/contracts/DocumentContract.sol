@@ -1,4 +1,5 @@
 pragma solidity ^0.8.0;
+//pragma solidity >=0.5.0;
 pragma experimental ABIEncoderV2;
 
 contract DocumentContract {
@@ -11,7 +12,7 @@ contract DocumentContract {
     string public documentName;
     RevisionDocument[] public revisions;
 
-    constructor(string memory _ipfsHash, string memory _documentName) public {
+    constructor(string memory _ipfsHash, string memory _documentName) {
         ipfsHash = _ipfsHash;
         documentName = _documentName;
     }

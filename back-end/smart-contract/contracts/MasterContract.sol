@@ -11,11 +11,19 @@ contract MasterContract {
     //ownerAddress => documentContracts
     mapping(address => DocumentContract[]) public owners;
 
-    function getListOfDocuments(address owner) public view returns(string memory){
+    function getListOfDocuments(address owner) public view returns(string memory, address[] memory){
         DocumentContract[] memory contracts = owners[owner];
         string memory output = '{ "Files": [';
 
+        address[] memory contractAddresses = new address[](contracts.length);
+
         for(uint i = 0; i < contracts.length; i++){
+            if(address(contracts[i]) == address(0x0)){
+                continue;
+            }
+
+            contractAddresses[i] = address(contracts[i]);
+
             string[2] memory hashAndDocument = contracts[i].getIpfsHashAndDocumentName();
             if(i != contracts.length - 1){
                 output = string(bytes.concat(bytes(output), '{ "Hash": "', bytes(hashAndDocument[0]), '", "Name": "', bytes(hashAndDocument[1]), '"}, '));
@@ -27,7 +35,7 @@ contract MasterContract {
 
         output = string(bytes.concat(bytes(output), ']}'));
 
-        return output;
+        return (output, contractAddresses);
     }
 
     function uploadDocument(string memory ipfsHash, address ownerAddress, string memory documentName) public{

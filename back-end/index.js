@@ -167,8 +167,10 @@ app.patch('/editFile', async (req, res) => {
 
 app.get('/delete', async (req, res) => {
     var owner = req.query.address;
-    var document = req.query.document;
-
+    var hash = req.query.cid;
+    const document = await contractInstance.methods.getAddressFromHash(owner,hash).call();
+    console.log(document)
+    console.log("done")
     //Blockchain interaction
     const functionAbi = contractInstance._jsonInterface.find(e => {
         return e.name === "deleteOwnerFromDocument";

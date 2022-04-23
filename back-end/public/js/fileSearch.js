@@ -41,6 +41,7 @@ async function showTable(){
             const data = full_data["data"]
             for(var i=0; i< data["Files"].length; i++) {
                 data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
+                data["Files"][i]["Edit"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/">Edit</a>`
                 data["Files"][i]["Delete"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/delete?cid=${data["Files"][i]["Hash"]}&address=${localStorage.getItem('address')}">Delete</a>`
             }
             $(document).ready(function() {
@@ -57,28 +58,6 @@ async function showTable(){
             });
         }
     }).catch(err => console.error(err));
-}
-
-function deployButtons(){
-    $('table tr td:nth-child(3)').html("<td><a id='download-button' class='mini-gold-button'>Download</a></td>");
-    $('table tr td:nth-child(4)').html("<td><button id='edit-button' class='mini-gold-button'>Edit</button></td>");
-    $('table tr td:nth-child(5)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
-
-    $(".mini-gold-button").click(async function() {
-        let info = [];
-        $.each($(this).closest("tr").find("td"), function() {
-            info.push($(this).text())
-        });
-        
-        if($(this).attr('id') == 'download-button')
-            await download(info);
-
-        if($(this).attr('id') == 'edit-button')
-            edit(info);
-        
-        if($(this).attr('id') == 'delete-button')
-            await deleteVal(info);
-    });
 }
 
 async function download(info){

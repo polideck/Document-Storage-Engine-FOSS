@@ -103,7 +103,7 @@ app.get('/get_all_files', async (req, res) => {
     const data = await contractInstance.methods.getListOfDocuments(address).call();
     const results = {
         "data" : JSON.parse(data[0]),
-        "address" : data[1][0]
+        "addresses" : data[1]
     }
     res.send(results)
 });
@@ -192,7 +192,7 @@ app.get('/delete', async (req, res) => {
     const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
     console.log("tx transactionHash: " + txReceipt.transactionHash);
     console.log("tx contractAddress: " + txReceipt.contractAddress);
-    
+    res.sendStatus(200);
 });
 
 app.get('/api/authenticate-token', (req, res) => {

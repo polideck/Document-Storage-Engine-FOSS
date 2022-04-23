@@ -101,7 +101,11 @@ app.get('/search', (req, res) => {
 app.get('/get_all_files', async (req, res) => {
     const address = req.query.address
     const data = await contractInstance.methods.getListOfDocuments(address).call();
-    res.send(data)
+    const results = {
+        "data" : JSON.parse(data[0]),
+        "address" : data[1][0]
+    }
+    res.send(results)
 });
 
 

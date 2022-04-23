@@ -36,8 +36,9 @@ async function showTable(){
         if(response.ok) {
             return response.json();
         }
-    }).then(data => {
-        if(data) {
+    }).then(full_data => {
+        if(full_data) {
+            const data = full_data["data"]
             for(var i=0; i< data["Files"].length; i++) {
                 data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
                 data["Files"][i]["Delete"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/delete?cid=${data["Files"][i]["Hash"]}&address=${localStorage.getItem('address')}">Delete</a>`

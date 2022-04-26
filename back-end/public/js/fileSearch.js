@@ -39,8 +39,12 @@ async function showTable(){
     }).then(full_data => {
         if(full_data) {
             const data = full_data["data"]
+            const addresses = full_data["addresses"]
+
             for(var i=0; i< data["Files"].length; i++) {
                 data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
+                data["Files"][i]["Edit"] = `<td><button type='file' id='editbutton' data-contractAddress='${addresses[i]}' class='mini-gold-button'>Edit</button></td>`
+                data["Files"][i]["Delete"] = `<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>"`
             }
             editAndDeleteButtons();
 
@@ -62,10 +66,6 @@ async function showTable(){
 }
 
 async function editAndDeleteButtons(){
-    $('table tr td:nth-child(3)').html("<td><button type='file' id='editbutton' class='mini-gold-button'>Edit</button></td>");
-    $('table tr td:nth-child(4)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
-
-
     $(".mini-gold-button").click(async function() {
         let info = [];
         $.each($(this).closest("tr").find("td"), function() {
@@ -76,7 +76,7 @@ async function editAndDeleteButtons(){
             let formData = new FormData();   
             formData.append("file", editbutton.files[0]);
 
-            await edit(info, formData)
+            await edit(info, $(this).attr('data-contractAddress'), formData)
             .then(() => { location.reload(); });
         }
             
@@ -89,8 +89,8 @@ async function editAndDeleteButtons(){
     });
 }
 
-async function edit(info, formData){
-    await fetch(`/editFile?cid=${info[0]}&filename=${info[1]}`, {
+async function edit(info, contractAddress, formData){
+    await fetch(`/editFile?cid=${info[0]}&address=${localStorage.getItem('address')}&contractAddress=${contractAddress}`, {
         method: "PATCH", 
         body: formData
       }); 

@@ -166,6 +166,15 @@ app.get('/file', async (req, res) => {
 });
 
 app.patch('/editFile', async (req, res) => {
+    var owner = req.query.address;
+    var hash = req.query.cid;
+    var contractAddress = req.query.contractAddress;
+    
+    const file = req.files.file;
+    const fileName = file.name;
+    const filePath = 'public/uploads/'+fileName;
+
+
     res.sendStatus(200);
 });
 

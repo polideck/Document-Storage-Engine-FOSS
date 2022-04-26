@@ -62,7 +62,7 @@ async function showTable(){
 }
 
 async function editAndDeleteButtons(){
-    $('table tr td:nth-child(3)').html("<td><button type='file' id='edit-button' class='mini-gold-button'>Edit</button></td>");
+    $('table tr td:nth-child(3)').html("<td><button type='file' id='editbutton' class='mini-gold-button'>Edit</button></td>");
     $('table tr td:nth-child(4)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
 
 
@@ -72,9 +72,9 @@ async function editAndDeleteButtons(){
             info.push($(this).text())
         });
 
-        if($(this).attr('id') == 'edit-button'){
+        if($(this).attr('id') == 'editbutton'){
             let formData = new FormData();   
-            formData.append("file", edit-button.files[0]);
+            formData.append("file", editbutton.files[0]);
 
             await edit(info, formData)
             .then(() => { location.reload(); });

@@ -41,9 +41,9 @@ async function showTable(){
             const data = full_data["data"]
             for(var i=0; i< data["Files"].length; i++) {
                 data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
-                data["Files"][i]["Edit"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/">Edit</a>`
-                data["Files"][i]["Delete"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/delete?cid=${data["Files"][i]["Hash"]}&address=${localStorage.getItem('address')}">Delete</a>`
             }
+            editAndDeleteButtons();
+
             $(document).ready(function() {
                 $('table').bootstrapTable({
                     data: data["Files"]
@@ -54,46 +54,50 @@ async function showTable(){
                     $("#blockchain-table tr").filter('tr:not(:first)').filter(function() {
                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
+                    editAndDeleteButtons();
                 });
             });
         }
     }).catch(err => console.error(err));
 }
 
-async function download(info){
-    console.log(info)
+async function editAndDeleteButtons(){
+    $('table tr td:nth-child(3)').html("<td><button type='file' id='edit-button' class='mini-gold-button'>Edit</button></td>");
+    $('table tr td:nth-child(4)').html("<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>");
 
-    let res = await fetch(`/file?cid=${info[1]}&filename=${info[0]}`, {
-        method: "GET", 
-      }); 
 
-    console.log(res);
+    $(".mini-gold-button").click(async function() {
+        let info = [];
+        $.each($(this).closest("tr").find("td"), function() {
+            info.push($(this).text())
+        });
+
+        if($(this).attr('id') == 'edit-button'){
+            let formData = new FormData();   
+            formData.append("file", edit-button.files[0]);
+
+            await edit(info, formData)
+            .then(() => { location.reload(); });
+        }
+            
+        if($(this).attr('id') == 'delete-button'){
+            await deleteVal(info)
+            .then(() => { location.reload(); });
+        }
+
+        console.log(res);
+    });
 }
 
-async function deleteVal(info){
-    let formData = new FormData();   
-    formData.append("name", info[0]);
-    formData.append("dateAdded", info[1]);
-    formData.append("createdBy", info[2]);
-
-    let res = await fetch('/delete', {
-        method: "DELETE", 
-        body: formData
-      });    
-    
-    console.log(res);
-}
-
-async function edit(info){
-    let formData = new FormData();   
-    formData.append("name", info[0]);
-    formData.append("dateAdded", info[1]);
-    formData.append("createdBy", info[2]);
-
-    let res = await fetch('/editFile', {
+async function edit(info, formData){
+    await fetch(`/editFile?cid=${info[0]}&filename=${info[1]}`, {
         method: "PATCH", 
         body: formData
       }); 
+}
 
-    console.log(res);
+async function deleteFile(info){
+    await fetch(`/delete?cid=${info[0]}&address=${localStorage.getItem('address')}`, {
+        method: "DELETE", 
+      }); 
 }

@@ -169,7 +169,7 @@ app.patch('/editFile', async (req, res) => {
     res.sendStatus(200);
 });
 
-app.get('/delete', async (req, res) => {
+app.delete('/delete', async (req, res) => {
     var owner = req.query.address;
     var hash = req.query.cid;
     const document = await contractInstance.methods.getAddressFromHash(owner,hash).call();

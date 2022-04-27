@@ -44,13 +44,16 @@ async function showTable(){
 
             for(var i=0; i< data["Files"].length; i++) {
                 data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://localhost:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
-                data["Files"][i]["Edit"] = `<a class='mini-gold-button' href="http://localhost:6969/">Edit</a>`
-                data["Files"][i]["Delete"] = `<a id='delete' class='mini-gold-button' onClick="" href="http://localhost:6969/delete?documentAddress=${addresses[i]}&owner=${localStorage.getItem('address')}">Delete</a>`
+                data["Files"][i]["Delete"] = `<a id='delete' class='mini-gold-button' href="http://localhost:6969/delete?documentAddress=${addresses[i]}&owner=${localStorage.getItem('address')}">Delete</a>`
             }
-            $(document).ready(function() {
+
+
+            $(document).ready(async function() {
                 $('table').bootstrapTable({
                     data: data["Files"]
                 });
+                await updateButton();
+
 
                 $("#myInput").on("keyup", function() {
                     var value = $(this).val().toLowerCase();
@@ -63,28 +66,31 @@ async function showTable(){
     }).catch(err => console.error(err));
 }
 
-async function download(info){
-    console.log(info)
+async function updateButton(){
+    $('table tr td:nth-child(4)').html('<input type="file" style="font-size: 10px; width:70px;" id="updatebutton" class="mini-gold-button removeValue"/>');
+    //$('#updatebutton').addClass('removeValue');
 
-    let res = await fetch(`/file?cid=${info[1]}&filename=${info[0]}`, {
-        method: "GET", 
-      }); 
+    $("#updatebutton").change(async function() {
+        let info = [];
+        $.each($(this).closest("tr").find("td"), function() {
+            info.push($(this).text())
+        });
 
-    console.log(res);
-}
+        info = info.slice(0,2);
+        
+        $.each($('#updatebutton'), function(){
+            info.push($(this).prop('files')[0])
+        });
 
-async function deleteVal(info){
-    let formData = new FormData();   
-    formData.append("name", info[0]);
-    formData.append("dateAdded", info[1]);
-    formData.append("createdBy", info[2]);
+        console.log(info)
 
-    let res = await fetch('/delete', {
-        method: "DELETE", 
-        body: formData
-      });    
-    
-    console.log(res);
+        // const res = await edit(info)
+        // .then(() => { location.reload(); });
+            
+
+        console.log(res);
+    });
+
 }
 
 async function edit(info){

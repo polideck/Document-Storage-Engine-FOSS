@@ -84,6 +84,10 @@
               cursor: pointer;
               text-decoration:none;
           }
+          
+          .removeValue {
+            color: transparent;
+        }
 
           input[type=file]::file-selector-button {
             color: white; 
@@ -132,14 +136,6 @@
         Manage Files
       </h1>
 
-      <!-- <label class="gold-button">
-        <input id='fileupload' type="file"/>
-        Upload File
-      </label> -->
-      <!-- <label for="file-upload" class="gold-button">
-        Upload File
-    </label>
-    <input id="file-upload" type="file"/> -->
       <input id="fileupload" type="file" class="mini-gold-button" name="fileupload">
 
       <button id="upload-button" class="gold-button" onclick="uploadFile()"> Upload </button>

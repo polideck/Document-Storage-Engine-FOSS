@@ -184,7 +184,8 @@ app.get('/delete', async (req, res) => {
     const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
     console.log("tx transactionHash: " + txReceipt.transactionHash);
     //console.log("tx contractAddress: " + txReceipt.contractAddress);
-    res.sendStatus(200);
+    //res.sendStatus(200);
+    res.redirect('/search');
 });
 
 app.get('/api/authenticate-token', (req, res) => {

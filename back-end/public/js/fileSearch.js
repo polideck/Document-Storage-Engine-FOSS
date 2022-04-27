@@ -27,18 +27,8 @@ fetch(url, {
         }
     );
 
+
 async function showTable(){
-    // // Act on clicks to a elements
-    // $("#delete").on('click', function(e) {
-    //     // prevent the default action, in this case the following of a link
-    //     e.preventDefault();
-    //     // capture the href attribute of the a element
-    //     var url = $(this).attr('href');
-    //     // perform a get request using ajax to the captured href value
-    //     $.get(url, function() {
-    //         // success
-    //     });
-    // });
 
     await fetch(`/get_all_files?address=${localStorage.getItem('address')}`, {
         method: "GET", 
@@ -55,7 +45,7 @@ async function showTable(){
             for(var i=0; i< data["Files"].length; i++) {
                 data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://localhost:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
                 data["Files"][i]["Edit"] = `<a class='mini-gold-button' href="http://localhost:6969/">Edit</a>`
-                data["Files"][i]["Delete"] = `<a id='delete' class='mini-gold-button' href="http://localhost:6969/delete?documentAddress=${addresses[i]}&owner=${localStorage.getItem('address')}">Delete</a>`
+                data["Files"][i]["Delete"] = `<a id='delete' class='mini-gold-button' onClick="" href="http://localhost:6969/delete?documentAddress=${addresses[i]}&owner=${localStorage.getItem('address')}">Delete</a>`
             }
             $(document).ready(function() {
                 $('table').bootstrapTable({

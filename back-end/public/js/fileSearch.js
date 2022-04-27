@@ -1,4 +1,3 @@
-
 var url = "/api/authenticate-token";
 var authenticated = false;
 var bearer = 'Bearer ' + localStorage.getItem('bearer')
@@ -29,6 +28,32 @@ fetch(url, {
     );
 
 async function showTable(){
+
+    $(".mini-gold-button").click(async function() {
+        console.log('TEST');
+
+        let info = [];
+        $.each($(this).closest("tr").find("td"), function() {
+            info.push($(this).text())
+        });
+
+        if($(this).attr('id') == 'editbutton'){
+            let formData = new FormData();   
+            formData.append("file", editbutton.files[0]);
+
+            await edit(info, $(this).attr('data-contractAddress'), formData)
+            .then(() => { location.reload(); });
+        }
+            
+        if($(this).attr('id') == 'delete-button'){
+            await deleteFile(info)
+            .then(() => { location.reload(); });
+        }
+
+        console.log(res);
+    });
+
+
     await fetch(`/get_all_files?address=${localStorage.getItem('address')}`, {
         method: "GET", 
     })
@@ -39,11 +64,15 @@ async function showTable(){
     }).then(full_data => {
         if(full_data) {
             const data = full_data["data"]
+            const addresses = full_data["addresses"]
+
             for(var i=0; i< data["Files"].length; i++) {
-                data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://localhost:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
-                data["Files"][i]["Edit"] = `<a class='mini-gold-button' href="http://localhost:6969/">Edit</a>`
-                data["Files"][i]["Delete"] = `<a class='mini-gold-button' href="http://localhost:6969/delete?cid=${data["Files"][i]["Hash"]}&address=${localStorage.getItem('address')}">Delete</a>`
+                data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://localhost:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`;
+                data["Files"][i]["Edit"] = `<td><button type='file' id='editbutton' data-contractAddress='${addresses[i]}' class='mini-gold-button'>Edit</button></td>`;
+                data["Files"][i]["Delete"] = `<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>"`;
             }
+            //editAndDeleteButtons();
+
             $(document).ready(function() {
                 $('table').bootstrapTable({
                     data: data["Files"]
@@ -54,46 +83,26 @@ async function showTable(){
                     $("#blockchain-table tr").filter('tr:not(:first)').filter(function() {
                         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                     });
+                    //editAndDeleteButtons();
                 });
             });
         }
     }).catch(err => console.error(err));
 }
 
-async function download(info){
-    console.log(info)
+//async function editAndDeleteButtons(){
 
-    let res = await fetch(`/file?cid=${info[1]}&filename=${info[0]}`, {
-        method: "GET", 
-      }); 
+//}
 
-    console.log(res);
-}
-
-async function deleteVal(info){
-    let formData = new FormData();   
-    formData.append("name", info[0]);
-    formData.append("dateAdded", info[1]);
-    formData.append("createdBy", info[2]);
-
-    let res = await fetch('/delete', {
-        method: "DELETE", 
-        body: formData
-      });    
-    
-    console.log(res);
-}
-
-async function edit(info){
-    let formData = new FormData();   
-    formData.append("name", info[0]);
-    formData.append("dateAdded", info[1]);
-    formData.append("createdBy", info[2]);
-
-    let res = await fetch('/editFile', {
+async function edit(info, contractAddress, formData){
+    await fetch(`http://localhost:6969/editFile?cid=${info[0]}&address=${localStorage.getItem('address')}&contractAddress=${contractAddress}`, {
         method: "PATCH", 
         body: formData
       }); 
+}
 
-    console.log(res);
+async function deleteFile(info){
+    await fetch(`http://localhost:6969/delete?cid=${info[0]}&address=${localStorage.getItem('address')}`, {
+        method: "DELETE", 
+      }); 
 }

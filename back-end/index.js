@@ -158,6 +158,44 @@ app.get('/file', async (req, res) => {
 });
 
 app.patch('/editFile', async (req, res) => {
+    const owner = req.body.owner;
+    const contractAddress = req.body.contractAddress;
+    const file = req.files.file;
+    const fileName = file.name;
+
+    const filePath = `public/uploads/${fileName}`;
+
+    const documentContractInstance = new web3.eth.Contract(DOCUMENT_CONTRACT_ABI, contractAddress);
+
+    file.mv(filePath,async(err)=>{
+        if(err){
+            console.log("error : while uploading file");
+            return res.status(500).send(err);
+        }
+        const fileHash = await addIpfsFile (fileName,filePath);
+
+        //Blockchain interaction
+        const functionAbi = documentContractInstance._jsonInterface.find(e => {
+            return e.name === "updateDocument";
+          });
+        const functionArgs = web3.eth.abi
+        .encodeParameters(functionAbi.inputs, [fileHash.toString(), fileName])
+        .slice(2);
+        const functionParams = {
+            to: contractAddress,
+            data: functionAbi.signature + functionArgs,
+            gas: "4000000"  //max number of gas units the tx is allowed to use
+          };
+        const signedTx = await web3.eth.accounts.signTransaction(functionParams, account.privateKey);
+        console.log("sending the txn")
+        const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        console.log("tx transactionHash: " + txReceipt.transactionHash);
+        fs.unlink(filePath,(err)=>{
+            if(err) console.log(err);
+        })
+    })
+
+
     res.sendStatus(200);
 });
 

@@ -45,6 +45,7 @@ async function showTable(){
             for(var i=0; i< data["Files"].length; i++) {
                 data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://localhost:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
                 data["Files"][i]["Delete"] = `<a id='delete' class='mini-gold-button' href="http://localhost:6969/delete?documentAddress=${addresses[i]}&owner=${localStorage.getItem('address')}">Delete</a>`
+                data["Files"][i]["Update"] = `<input type="file" style="font-size: 10px; width:70px;" data-address="${addresses[i]}" id="updatebutton" class="mini-gold-button removeValue"/>`
             }
 
 
@@ -67,9 +68,6 @@ async function showTable(){
 }
 
 async function updateButton(){
-    $('table tr td:nth-child(4)').html('<input type="file" style="font-size: 10px; width:70px;" id="updatebutton" class="mini-gold-button removeValue"/>');
-    //$('#updatebutton').addClass('removeValue');
-
     $("#updatebutton").change(async function() {
         let info = [];
         $.each($(this).closest("tr").find("td"), function() {
@@ -80,12 +78,13 @@ async function updateButton(){
         
         $.each($('#updatebutton'), function(){
             info.push($(this).prop('files')[0])
+            info.push($(this).attr('data-address'))
         });
 
         console.log(info)
 
-        // const res = await edit(info)
-        // .then(() => { location.reload(); });
+        const res = await edit(info)
+        .then(() => { location.reload(); });
             
 
         console.log(res);
@@ -96,8 +95,12 @@ async function updateButton(){
 async function edit(info){
     let formData = new FormData();   
     formData.append("name", info[0]);
-    formData.append("dateAdded", info[1]);
-    formData.append("createdBy", info[2]);
+    formData.append("hash", info[1]);
+    formData.append("owner", localStorage.getItem('address'));
+    formData.append("contractAddress", info[3])
+
+    formData.append("file", info[2]);
+
 
     let res = await fetch('/editFile', {
         method: "PATCH", 

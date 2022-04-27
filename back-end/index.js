@@ -16,7 +16,7 @@ var multer  =   require('multer');
 const Web3 = require('web3');
 const {DOCUMENT_CONTRACT_ABI,CONTRACT_ADDRESS,CONTRACT_ABI} = require('./config');
 
-const web3 = new Web3('http://192.168.100.50:8545');
+const web3 = new Web3('http://localhost:8545');
 
 
 const upload = multer({ dest: 'public/uploads' });
@@ -27,8 +27,8 @@ const contractInstance = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
 // call Core API methods
 //const { cid } = await ipfs_client.add('Hello world!')
 const account = {
-    address : "0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF",
-    privateKey : "0x8653be3cbd45e2a5de209b52847b52210cf0e1d8ba7eba6ad53f632457085f26"
+    address : "0xfc9E9999e1548Fe9C5e656d9e9c3cBfA1B75ef74",
+    privateKey : "5e3a3c8631c041eb035edc3de34c289a931245e908112b89325efd3c18f6d039"
     };
 
 if(process.env.AESKEY == "" && process.env.IV == "" && process.env.TOKEN_SECRET == ""){
@@ -169,7 +169,7 @@ app.patch('/editFile', async (req, res) => {
     var owner = req.query.address;
     var hash = req.query.cid;
     var contractAddress = req.query.contractAddress;
-    
+
     const file = req.files.file;
     const fileName = file.name;
     const filePath = 'public/uploads/'+fileName;

@@ -42,7 +42,7 @@ async function showTable(){
             const addresses = full_data["addresses"]
 
             for(var i=0; i< data["Files"].length; i++) {
-                data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://192.168.100.50:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
+                data["Files"][i]["Download"] = `<a class='mini-gold-button' href="http://localhost:6969/file?cid=${data["Files"][i]["Hash"]}&filename=${data["Files"][i]["Name"]}">Download</a>`
                 data["Files"][i]["Edit"] = `<td><button type='file' id='editbutton' data-contractAddress='${addresses[i]}' class='mini-gold-button'>Edit</button></td>`
                 data["Files"][i]["Delete"] = `<td><button id='delete-button' class='mini-gold-button'>Delete</button></td>"`
             }

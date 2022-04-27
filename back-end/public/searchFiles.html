@@ -103,10 +103,13 @@
       <!-- File Search and upload JavaScript -->
       <script src="./js/fileSearch.js"></script>
       <script src="./js/fileUpload.js"></script>
+      <script src="./js/logout.js"></script>
       
   </head>
   <body>
     <div class="container">
+      <button id="logout" class="mini-gold-button" style="margin-left: 5px; margin-top: 5px;" onclick="logout()">Logout</button>
+
       <img src='images/polidecklogowhite.svg' class="polidecklogowhite" alt="logo" />
       <h1 class="text text-light text-center">
         Manage Files
@@ -137,9 +140,9 @@
                 Download
               </span>
             </th>
-            <th data-field="Edit">
+            <th data-field="Update">
               <span class="text-info">
-                Edit
+                Update
               </span>
             </th>
             <th data-field="Delete">

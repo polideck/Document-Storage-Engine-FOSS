@@ -133,7 +133,7 @@ app.post('/add',(req,res)=>{
         console.log("sending the txn")
         const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
         console.log("tx transactionHash: " + txReceipt.transactionHash);
-        console.log("tx contractAddress: " + txReceipt.contractAddress);
+        //console.log("tx contractAddress: " + txReceipt.contractAddress);
         fs.unlink(filePath,(err)=>{
             if(err) console.log(err);
         })
@@ -162,17 +162,17 @@ app.patch('/editFile', async (req, res) => {
 });
 
 app.get('/delete', async (req, res) => {
-    var owner = req.query.address;
-    var hash = req.query.cid;
-    const document = await contractInstance.methods.getAddressFromHash(owner,hash).call();
-    console.log(document)
+    var owner = req.query.owner;
+    var documentAddress = req.query.documentAddress;
+    //const document = await contractInstance.methods.getAddressFromHash(owner,hash).call();
+    //console.log(document)
     console.log("done")
     //Blockchain interaction
     const functionAbi = contractInstance._jsonInterface.find(e => {
         return e.name === "deleteOwnerFromDocument";
       });
     const functionArgs = web3.eth.abi
-    .encodeParameters(functionAbi.inputs, [owner,document])
+    .encodeParameters(functionAbi.inputs, [owner,documentAddress])
     .slice(2);
     const functionParams = {
         to: CONTRACT_ADDRESS,
@@ -183,7 +183,7 @@ app.get('/delete', async (req, res) => {
     console.log("sending the txn")
     const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
     console.log("tx transactionHash: " + txReceipt.transactionHash);
-    console.log("tx contractAddress: " + txReceipt.contractAddress);
+    //console.log("tx contractAddress: " + txReceipt.contractAddress);
     res.sendStatus(200);
 });
 

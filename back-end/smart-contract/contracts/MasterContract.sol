@@ -17,12 +17,14 @@ contract MasterContract {
 
         address[] memory contractAddresses = new address[](contracts.length);
 
+        uint buffer = 0;
         for(uint i = 0; i < contracts.length; i++){
             if(address(contracts[i]) == address(0x0)){
+                buffer += 1;
                 continue;
             }
 
-            contractAddresses[i] = address(contracts[i]);
+            contractAddresses[i - buffer] = address(contracts[i]);
 
             string[2] memory hashAndDocument = contracts[i].getIpfsHashAndDocumentName();
             if(i != contracts.length - 1){

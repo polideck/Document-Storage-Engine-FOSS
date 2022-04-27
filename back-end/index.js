@@ -164,7 +164,6 @@ app.patch('/editFile', async (req, res) => {
 app.get('/delete', async (req, res) => {
     var owner = req.query.owner;
     var documentAddress = req.query.documentAddress;
-    //const document = await contractInstance.methods.getAddressFromHash(owner,hash).call();
     //console.log(document)
     console.log("done")
     //Blockchain interaction
@@ -180,6 +179,7 @@ app.get('/delete', async (req, res) => {
         gas: "3000000"  //max number of gas units the tx is allowed to use
       };
     const signedTx = await web3.eth.accounts.signTransaction(functionParams, account.privateKey);
+
     console.log("sending the txn")
     const txReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
     console.log("tx transactionHash: " + txReceipt.transactionHash);

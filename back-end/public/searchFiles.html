@@ -85,6 +85,23 @@
               text-decoration:none;
           }
 
+          input[type=file]::file-selector-button {
+            color: white; 
+            border: 2px solid rgb(58,58,60);
+            padding: .2em .4em;
+            border-radius: .2em;
+            background-color: rgb(58,58,60);
+            transition: all .7s ease 0s;
+          }
+
+          input[type=file]:hover::file-selector-button {
+              background-color: rgb(204,167,49);
+              border: 2px solid rgb(204,167,49);
+              cursor: pointer;
+              text-decoration:none;
+          }
+
+
       </style>
 
       <!-- Include Bootstrap for styling -->
@@ -115,7 +132,15 @@
         Manage Files
       </h1>
 
-      <input id="fileupload" type="file" class="gold-button" name="fileupload" />
+      <!-- <label class="gold-button">
+        <input id='fileupload' type="file"/>
+        Upload File
+      </label> -->
+      <!-- <label for="file-upload" class="gold-button">
+        Upload File
+    </label>
+    <input id="file-upload" type="file"/> -->
+      <input id="fileupload" type="file" class="mini-gold-button" name="fileupload">
 
       <button id="upload-button" class="gold-button" onclick="uploadFile()"> Upload </button>
 

@@ -16,7 +16,7 @@ var multer  =   require('multer');
 const Web3 = require('web3');
 const {DOCUMENT_CONTRACT_ABI,CONTRACT_ADDRESS,CONTRACT_ABI} = require('./config');
 
-const web3 = new Web3('http://192.168.100.50:8545');
+const web3 = new Web3('http://localhost:8545');
 
 
 const upload = multer({ dest: 'public/uploads' });
@@ -27,8 +27,8 @@ const contractInstance = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
 // call Core API methods
 //const { cid } = await ipfs_client.add('Hello world!')
 const account = {
-    address : "0x21f93e128a6D7926A37DF0c2a94bd0248ea343eF",
-    privateKey : "0x8653be3cbd45e2a5de209b52847b52210cf0e1d8ba7eba6ad53f632457085f26"
+    address : "0xfc9E9999e1548Fe9C5e656d9e9c3cBfA1B75ef74",
+    privateKey : "5e3a3c8631c041eb035edc3de34c289a931245e908112b89325efd3c18f6d039"
     };
 
 if(process.env.AESKEY == "" && process.env.IV == "" && process.env.TOKEN_SECRET == ""){
@@ -44,18 +44,6 @@ if(process.env.AESKEY == "" && process.env.IV == "" && process.env.TOKEN_SECRET 
     parsedFile.TOKEN_SECRET = initializationTokenSecret;
 
     fs.writeFileSync('./server.env', envfile.stringify(parsedFile)) 
-}
-
-function encrypt(val){
-    let cipher = crypto.createCipheriv('aes-256-cbc', process.env.AESKEY, process.env.IV);
-    let encrypted = cipher.update(val, 'utf8', 'base64') + cipher.final('base64');
-    return encrypted;
-}
-  
-function decrypt(val){
-    let decipher = crypto.createDecipheriv('aes-256-cbc', process.env.AESKEY, process.env.IV);
-    let decrypted = decipher.update(val, 'base64', 'utf8') + decipher.final('utf8');
-    return decrypted;
 }
 
 //Start of Server
@@ -101,6 +89,10 @@ app.get('/search', (req, res) => {
 app.get('/get_all_files', async (req, res) => {
     const address = req.query.address
     const data = await contractInstance.methods.getListOfDocuments(address).call();
+
+    if(data[0][data[0].length - 4] == ','){
+        data[0] = data[0].slice(0, data[0].length - 4) + data[0].slice(data[0].length - 3);
+    }
     const results = {
         "data" : JSON.parse(data[0]),
         "addresses" : data[1]

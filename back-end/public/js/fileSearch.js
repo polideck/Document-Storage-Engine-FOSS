@@ -68,7 +68,9 @@ async function showTable(){
 }
 
 async function updateButton(){
-    $("#updatebutton").change(async function() {
+    $(".removeValue").change(async function() {
+        console.log('CHANGE');
+
         let info = [];
         $.each($(this).closest("tr").find("td"), function() {
             info.push($(this).text())
@@ -76,9 +78,11 @@ async function updateButton(){
 
         info = info.slice(0,2);
         
-        $.each($('#updatebutton'), function(){
-            info.push($(this).prop('files')[0])
-            info.push($(this).attr('data-address'))
+        $.each($('.removeValue'), function(){
+            if($(this).prop('files')[0]){
+                info.push($(this).prop('files')[0])
+                info.push($(this).attr('data-address'))
+            }
         });
 
         console.log(info)
@@ -93,6 +97,9 @@ async function updateButton(){
 }
 
 async function edit(info){
+    console.log('edit');
+
+
     let formData = new FormData();   
     formData.append("name", info[0]);
     formData.append("hash", info[1]);

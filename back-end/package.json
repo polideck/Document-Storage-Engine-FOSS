@@ -21,8 +21,17 @@
     "web3": "^1.6.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "ganache": "ganache-cli --networkId $npm_package_config_ganache_networkId --allowUnlimitedContractSize --gasLimit $npm_package_config_ganache_gasLimit --gasPrice $npm_package_config_ganache_gasPrice --mnemonic \"$MNEMONIC\""
   },
+  "config": {
+    "ganache": {
+      "networkId": 1337,
+      "gasLimit":  700000,
+      "gasPrice":  300000000000
+    }
+  },
+
   "author": "",
   "license": "ISC"
 }

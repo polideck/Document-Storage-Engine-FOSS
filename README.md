@@ -1,4 +1,7 @@
-# polideck-prod
+# Polideck Document Storage Engine Community Edition
+
+DO NOT USE IN PRODUCTION. ADDITIONAL SECURITY MEASURES MUST BE TAKEN BEFORE USE.
+
 To run, make sure that Docker is running and then run the following commands:
 ```
 In the root directory run:
